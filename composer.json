@@ -1,0 +1,14 @@
+{
+    "name": "danil/yii2-sendgrid",
+    "description": "A library provides integration with SendGrid mail service",
+    "require": {
+        "sendgrid/sendgrid": "~4.0"
+    },
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "danil zakablukovskii",
+            "email": "danil.kabluk@gmail.com"
+        }
+    ]
+}
