@@ -1,14 +1,27 @@
 {
-    "name": "danil/yii2-sendgrid",
-    "description": "A library provides integration with SendGrid mail service",
-    "require": {
-        "sendgrid/sendgrid": "~4.0"
-    },
-    "license": "GPL-3.0",
-    "authors": [
-        {
-            "name": "danil zakablukovskii",
-            "email": "danil.kabluk@gmail.com"
-        }
-    ]
+  "name": "danil/yii2-sendgrid",
+  "version": "0.1",
+  "description": "A library provides integration with SendGrid mail service",
+  "keywords": [
+    "SendGrid",
+    "sendgrid",
+    "email",
+    "yii2",
+    "yii",
+    "extension",
+    "mailer"
+  ],
+  "require": {
+    "php": ">=5.3",
+    "yiisoft/yii2": "*",
+    "sendgrid/sendgrid": "~4.0"
+  },
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "danil zakablukovskii",
+      "email": "danil.kabluk@gmail.com"
+    }
+  ],
+  "type": "library"
 }
