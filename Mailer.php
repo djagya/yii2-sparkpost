@@ -4,16 +4,16 @@
  *
  * @copyright Copyright (c) 2016 Danil Zakablukovskii
  * @license http://www.gnu.org/copyleft/gpl.html
- * @package djagya/yii2-sendgrid
+ * @package djagya/yii2-sparkpost
  * @author Danil Zakablukovskii <danil.kabluk@gmail.com>
  */
 
-namespace djagya\sendgrid;
+namespace djagya\sparkpost;
 
 use yii\mail\BaseMailer;
 
 /**
- * Mailer consumes Message object and sends it through SendGrid API.
+ * Mailer consumes Message object and sends it through Sparkpost API.
  *
  * @see Message
  * @author Danil Zakablukovskii <danil.kabluk@gmail.com>
@@ -21,9 +21,9 @@ use yii\mail\BaseMailer;
  */
 class Mailer extends BaseMailer
 {
-    const LOG_CATEGORY = 'sendgrid-mailer';
+    const LOG_CATEGORY = 'sparkpost-mailer';
 
-    public $messageClass = 'djagya\mandrill\Message';
+    public $messageClass = 'djagya\sparkpost\Message';
 
     public function init()
     {

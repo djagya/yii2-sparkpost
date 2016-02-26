@@ -3,8 +3,7 @@
   "version": "0.1",
   "description": "A library provides integration with SendGrid mail service",
   "keywords": [
-    "SendGrid",
-    "sendgrid",
+    "sparkpost",
     "email",
     "yii2",
     "yii",
@@ -14,7 +13,7 @@
   "require": {
     "php": ">=5.3",
     "yiisoft/yii2": "*",
-    "sendgrid/sendgrid": "~4.0"
+    "sparkpost/php-sparkpost": "~1.0"
   },
   "license": "GPL-3.0",
   "authors": [
