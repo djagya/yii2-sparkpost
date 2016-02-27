@@ -50,6 +50,19 @@ class Mailer extends BaseMailer
      */
     public $sparkpostConfig = [];
 
+    /**
+     * Whether to use default email for 'from' and 'reply to' fields if they are empty.
+     * @var bool
+     */
+    public $useDefaultEmail = true;
+
+    /**
+     * Default sender email.
+     * If not specified, application name + params[adminEmail] will be used.
+     * @var string
+     */
+    public $defaultEmail;
+
     public $messageClass = 'djagya\sparkpost\Message';
 
     /** @var SparkPost */
@@ -70,6 +83,16 @@ class Mailer extends BaseMailer
 
         $httpAdapter = new Guzzle6HttpAdapter(new Client());
         $this->_sparkPost = new SparkPost($httpAdapter, $this->sparkpostConfig);
+
+        if ($this->useDefaultEmail && !$this->defaultEmail) {
+            if (!isset(\Yii::$app->params['adminEmail'])) {
+                throw new InvalidConfigException('You must set "' . get_class($this) .
+                    '::defaultEmail" or have "adminEmail" key in application params or disable  "' . get_class($this) .
+                    '::useDefaultEmail"');
+            }
+
+            $this->defaultEmail = \Yii::$app->name . '<' . \Yii::$app->params['adminEmail'] . '>';
+        }
     }
 
     public function compose($view = null, array $params = [])
@@ -89,6 +112,16 @@ class Mailer extends BaseMailer
     {
         if ($this->sandbox) {
             $message->setSandbox(true);
+        }
+
+        // set default message sender email
+        if ($this->useDefaultEmail) {
+            if (!$message->getFrom()) {
+                $message->setFrom($this->defaultEmail);
+            }
+            if (!$message->getReplyTo()) {
+                $message->setReplyTo($this->defaultEmail);
+            }
         }
 
         try {
