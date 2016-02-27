@@ -38,8 +38,9 @@ class Message extends BaseMessage
      *
      * OR an array of recipients:
      * [
-     *  'address' => string | ['email' => '', 'name' => ''],
-     * ]
+     *  'address' => string | ['email' => '', 'name' => '', 'header_to' => ''],
+     * ],
+     * where 'header_to' is used for Cc and Bcc recipients.
      *
      * Refer to the sections "Recipient Attributes" and "Recipient Lists".
      *
@@ -48,6 +49,26 @@ class Message extends BaseMessage
      * @var array
      */
     private $_to = [];
+
+    /**
+     * @var string Email address
+     */
+    private $_replyTo;
+
+    /**
+     * Headers other than "Subject", "From", "To", and "Reply-To":
+     * [
+     *  'Cc' => string,
+     * ]
+     * @var array
+     */
+    private $_headers = [];
+
+    private $_subject;
+
+    private $_text;
+
+    private $_html;
 
     /**
      * Returns the character set of this message.
@@ -75,16 +96,13 @@ class Message extends BaseMessage
      */
     public function getFrom()
     {
-        if (is_array($this->_from)) {
-            return "{$this->_from['name']} <{$this->_from['email']}>";
-        } else {
-            return $this->_from;
-        }
+        return $this->_from;
     }
 
     /**
-     * Sets the message sender. Multiple senders is not allowed, only first sender will be added.
+     * Sets the message sender.
      * @param string|array $from sender email address.
+     * You may pass an array of addresses if this message is from multiple people.
      * You may also specify sender name in addition to email address using format:
      * `[email => name]`.
      * @return $this self reference.
@@ -93,15 +111,8 @@ class Message extends BaseMessage
     {
         if (is_string($from)) {
             $this->_from = $from;
-        }
-
-        if (is_array($from)) {
-            reset($from);
-
-            $this->_from = [
-                'name' => current($from),
-                'email' => key($from),
-            ];
+        } elseif (is_array($from)) {
+            $this->_from = $this->emailsToString($from);
         }
 
         return $this;
@@ -109,24 +120,29 @@ class Message extends BaseMessage
 
     /**
      * Returns the message recipient(s).
-     * @return array the message recipients
+     * @return array the message recipients or the recipients list id
      */
     public function getTo()
     {
         if (isset($this->_to['list_id'])) {
-            return "Recipient List ID: {$this->_to['list_id']}";
+            return [$this->_to['list_id']];
         }
 
         $addresses = [];
         foreach ($this->_to as $item) {
+            // skip recipients with set header_to, i.e. CC and BCC recipients
+            if (isset($item['header_to'])) {
+                continue;
+            }
+
             if (is_array($item['address'])) {
-                $addresses[] = $item['address'];
+                $addresses[$item['address']['email']] = $item['address']['name'];
             } else {
-                $addresses[] = "{$item['address']['name']} <{$item['address']['email']}>";
+                $addresses[] = $item['address'];
             }
         }
 
-        return implode(', ', $addresses);
+        return $addresses;
     }
 
     /**
@@ -140,26 +156,7 @@ class Message extends BaseMessage
      */
     public function setTo($to)
     {
-        if (is_string($to)) {
-            $this->_to = [
-                ['address' => $to]
-            ];
-        }
-
-        if (is_array($to)) {
-            foreach ($to as $email => $name) {
-                if (is_int($email)) {
-                    $address = ['email' => $name];
-                } else {
-                    $address = [
-                        'email' => $email,
-                        'name' => $name,
-                    ];
-                }
-
-                $this->_to[] = $address;
-            }
-        }
+        $this->addRecipient($to);
 
         return $this;
     }
@@ -184,7 +181,7 @@ class Message extends BaseMessage
      */
     public function getReplyTo()
     {
-        // TODO: Implement getReplyTo() method.
+        return $this->_replyTo;
     }
 
     /**
@@ -197,7 +194,13 @@ class Message extends BaseMessage
      */
     public function setReplyTo($replyTo)
     {
-        // TODO: Implement setReplyTo() method.
+        if (is_string($replyTo)) {
+            $this->_replyTo = $replyTo;
+        } elseif (is_array($replyTo)) {
+            $this->_replyTo = $this->emailsToString($replyTo);
+        }
+
+        return $this;
     }
 
     /**
@@ -206,7 +209,26 @@ class Message extends BaseMessage
      */
     public function getCc()
     {
-        // TODO: Implement getCc() method.
+        $addresses = [];
+        foreach ($this->_to as $item) {
+            if (!isset($item['header_to'])) {
+                continue;
+            }
+
+            // fixme: better way to find substring
+            // if email is not represented in Cc header - it's the Bcc email
+            if (!isset($this->_headers['Cc']) || strpos($this->_headers['Cc'], $item['header_to']) === false) {
+                continue;
+            }
+
+            if (is_array($item['address'])) {
+                $addresses[$item['address']['email']] = $item['address']['email'];
+            } else {
+                $addresses[] = $item['address'];
+            }
+        }
+
+        return $addresses;
     }
 
     /**
@@ -219,7 +241,15 @@ class Message extends BaseMessage
      */
     public function setCc($cc)
     {
-        // TODO: Implement setCc() method.
+        $this->addRecipient($cc, true);
+
+        if (is_string($cc)) {
+            $this->_headers['Cc'] = $cc;
+        } elseif (is_array($cc)) {
+            $this->_headers['Cc'] = $this->emailsToString($cc);
+        }
+
+        return $this;
     }
 
     /**
@@ -228,7 +258,26 @@ class Message extends BaseMessage
      */
     public function getBcc()
     {
-        // TODO: Implement getBcc() method.
+        $addresses = [];
+        foreach ($this->_to as $item) {
+            if (!isset($item['header_to'])) {
+                continue;
+            }
+
+            // fixme: better way to find substring
+            // if email is represented in the Cc header, it's not the Bcc email
+            if (isset($this->_headers['Cc']) && strpos($this->_headers['Cc'], $item['header_to']) !== false) {
+                continue;
+            }
+
+            if (is_array($item['address'])) {
+                $addresses[$item['address']['email']] = $item['address']['email'];
+            } else {
+                $addresses[] = $item['address'];
+            }
+        }
+
+        return implode(', ', $addresses);
     }
 
     /**
@@ -241,7 +290,9 @@ class Message extends BaseMessage
      */
     public function setBcc($bcc)
     {
-        // TODO: Implement setBcc() method.
+        $this->addRecipient($bcc, true);
+
+        return $this;
     }
 
     /**
@@ -250,7 +301,7 @@ class Message extends BaseMessage
      */
     public function getSubject()
     {
-        // TODO: Implement getSubject() method.
+        return $this->_subject;
     }
 
     /**
@@ -260,7 +311,9 @@ class Message extends BaseMessage
      */
     public function setSubject($subject)
     {
-        // TODO: Implement setSubject() method.
+        $this->_subject = $subject;
+
+        return $this;
     }
 
     /**
@@ -270,7 +323,7 @@ class Message extends BaseMessage
      */
     public function setTextBody($text)
     {
-        // TODO: Implement setTextBody() method.
+        $this->_text = $text;
     }
 
     /**
@@ -280,7 +333,7 @@ class Message extends BaseMessage
      */
     public function setHtmlBody($html)
     {
-        // TODO: Implement setHtmlBody() method.
+        $this->_html = $html;
     }
 
     /**
@@ -351,7 +404,10 @@ class Message extends BaseMessage
      */
     public function toString()
     {
-        // TODO: Implement toString() method.
+        return $this->getSubject() . ' - Recipients:'
+        . ' [TO] ' . implode('; ', $this->getTo())
+        . ' [CC] ' . implode('; ', $this->getCc())
+        . ' [BCC] ' . implode('; ', $this->getBcc());
     }
 
     /**
@@ -361,23 +417,93 @@ class Message extends BaseMessage
     public function toArray()
     {
         return [
-            'campaign' => '',
+            'options' => [
+                'start_time' => '',
+                'open_tracking' => true,
+                'click_tracking' => true,
+                'transactional' => false,
+                'sandbox' => false,
+                'skip_suppression' => false,
+            ],
+            'recipients' => $this->_to,
+            'campaign_id' => '', // 64 byte
+            'description' => '', // 1024 bytes
             'metadata' => [],
             'substitutionData' => [],
-            'description' => '',
-            'replyTo' => '',
-            'subject' => '',
-            'from' => '',
-            'html' => '',
-            'text' => '',
-            'rfc822' => '',
-            'customHeaders' => [],
-            'recipients' => [],
-            'recipientList' => '',
-            'template' => '',
-            'trackOpens' => false,
-            'trackClicks' => false,
-            'useDraftTemplate' => false
+            'return_path' => '', // required
+            // 20 Mb
+            'content' => [
+                // if template
+                'template_id' => '', // 64 bytes
+                'use_draft_template' => false,
+                // if not a template
+                'html' => '',
+                'text' => '',
+                'subject' => '',
+                'from' => '',
+                'reply_to' => '',
+                'headers' => '',
+                'attachments' => [
+                    'type' => '',
+                    'name' => '', // 255 bytes
+                    'data' => '',
+                ],
+                'inline_images' => [
+                    'type' => '',
+                    'name' => '', // 255 bytes
+                    'data' => '',
+                ],
+            ],
         ];
+    }
+
+    /**
+     * Processes given emails and fill recipients field
+     * @param array|string $emails
+     * @param bool $copy adds header_to field with a placeholder to make the item a CC/BCC copy
+     */
+    protected function addRecipient($emails, $copy = false)
+    {
+        if (is_string($emails)) {
+            $emails = [$emails];
+        }
+
+        foreach ($emails as $email => $name) {
+            $address = [];
+
+            if (is_int($email)) {
+                $address['email'] = $name;
+            } else {
+                $address = [
+                    'name' => $name,
+                    'email' => $email,
+                ];
+            }
+
+            if ($copy) {
+                $address['header_to'] = '%mainRecipient%';
+            }
+
+            $this->_to[] = ['address' => $address];
+        }
+    }
+
+    /**
+     * Converts emails array to the string: ['name' => 'email'] -> '"name" <email>'
+     * @param array $emails
+     * @return string
+     */
+    private function emailsToString($emails)
+    {
+        $addresses = [];
+        foreach ($emails as $email => $name) {
+            if (is_int($email)) {
+                $addresses[] = $name;
+            } else {
+                $addresses[] = "\"{$name}\" <{$email}>";
+            }
+        }
+
+        return implode(',', $addresses);
     }
 }

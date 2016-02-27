@@ -90,6 +90,12 @@ class Mailer extends BaseMailer
                 return false;
             }
 
+            if (ArrayHelper::getValue($result, 'total_rejected_recipients') > 0) {
+                \Yii::info('Transmission #' . ArrayHelper::getValue($result, 'id') . ': ' .
+                    ArrayHelper::getValue($result, 'total_rejected_recipients') . ' rejected',
+                    self::LOG_CATEGORY);
+            }
+
             return true;
         } catch (APIResponseException $e) {
             \Yii::error($e->getMessage(), self::LOG_CATEGORY);
