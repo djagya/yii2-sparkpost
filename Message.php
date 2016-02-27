@@ -233,6 +233,10 @@ class Message extends BaseMessage
 
     /**
      * Sets the Cc (additional copy receiver) addresses of this message.
+     *
+     * Both CC and BCC recipients require set 'header_to' field, it should be the email of the main recipient.
+     * SparkPost distinguish CC and BCC recipients by having the same email in 'Cc' header of the message/template.
+     *
      * @param string|array $cc copy receiver email address.
      * You may pass an array of addresses if multiple recipients should receive this message.
      * You may also specify receiver name in addition to email address using format:
@@ -282,6 +286,10 @@ class Message extends BaseMessage
 
     /**
      * Sets the Bcc (hidden copy receiver) addresses of this message.
+     *
+     * Both CC and BCC recipients require set 'header_to' field, it should be the email of the main recipient.
+     * SparkPost distinguish CC and BCC recipients by having the same email in 'Cc' header of the message/template.
+     *
      * @param string|array $bcc hidden copy receiver email address.
      * You may pass an array of addresses if multiple recipients should receive this message.
      * You may also specify receiver name in addition to email address using format:
@@ -411,11 +419,14 @@ class Message extends BaseMessage
     }
 
     /**
+     * Prepares the message and gives it's array representation to send it through SparkSpot API
      * @see Transmission::send()
      * @return array
      */
     public function toArray()
     {
+        $this->prepareCopyRecipients();
+
         return [
             'options' => [
                 'start_time' => '',
@@ -460,7 +471,7 @@ class Message extends BaseMessage
     /**
      * Processes given emails and fill recipients field
      * @param array|string $emails
-     * @param bool $copy adds header_to field with a placeholder to make the item a CC/BCC copy
+     * @param bool $copy adds header_to field with a placeholder to make the recipient(s) a CC/BCC copy
      */
     protected function addRecipient($emails, $copy = false)
     {
@@ -505,5 +516,27 @@ class Message extends BaseMessage
         }
 
         return implode(',', $addresses);
+    }
+
+    /**
+     * Goes through all recipients to find the main recipient
+     * and replaces placeholder in 'header_to' field in copy recipients
+     */
+    private function prepareCopyRecipients()
+    {
+        $main = '';
+        // find the main recipient
+        foreach ($this->_to as $recipient) {
+            if (!$main && !isset($recipient['header_to'])) {
+                $main = $recipient['email'];
+                break;
+            }
+        }
+
+        foreach ($this->_to as &$recipient) {
+            if (isset($recipient['header_to'])) {
+                $recipient['header_to'] = str_replace('%mainRecipient', $main, $recipient['header_to']);
+            }
+        }
     }
 }
