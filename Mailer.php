@@ -33,7 +33,7 @@ class Mailer extends BaseMailer
      * SparkPost API Key, required.
      * @var string
      */
-    private $apiKey;
+    public $apiKey;
 
     /**
      * Additional SparkPost config
