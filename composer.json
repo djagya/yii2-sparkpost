@@ -16,6 +16,14 @@
     "sparkpost/php-sparkpost": "~1.0",
     "guzzlehttp/guzzle": "~6.0"
   },
+  "require-dev": {
+    "codeception/codeception": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "djagya\\sparkpost\\": ""
+    }
+  },
   "license": "GPL-3.0",
   "authors": [
     {
