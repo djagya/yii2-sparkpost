@@ -11,6 +11,8 @@
 namespace djagya\sparkpost;
 
 use yii\base\NotSupportedException;
+use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\mail\BaseMessage;
 
 /**
@@ -69,6 +71,10 @@ class Message extends BaseMessage
     private $_text;
 
     private $_html;
+
+    private $_attachments = [];
+
+    private $_images = [];
 
     /**
      * Returns the character set of this message.
@@ -356,7 +362,16 @@ class Message extends BaseMessage
      */
     public function attach($fileName, array $options = [])
     {
-        // TODO: Implement attach() method.
+        if (!$fileName) {
+            return $this;
+        }
+
+        $this->attachContent(file_get_contents($fileName), [
+            'fileName' => ArrayHelper::getValue($options, 'fileName', basename($fileName)),
+            'contentType' => ArrayHelper::getValue($options, 'contentType', FileHelper::getMimeType($fileName)),
+        ]);
+
+        return $this;
     }
 
     /**
@@ -371,7 +386,17 @@ class Message extends BaseMessage
      */
     public function attachContent($content, array $options = [])
     {
-        // TODO: Implement attachContent() method.
+        if (!$content) {
+            return $this;
+        }
+
+        $this->_attachments[] = [
+            'type' => ArrayHelper::getValue($options, 'contentType', $this->getBinaryMimeType($content)),
+            'name' => ArrayHelper::getValue($options, 'fileName', ('file_' . count($this->_attachments))),
+            'data' => base64_encode($content),
+        ];
+
+        return $this;
     }
 
     /**
@@ -380,14 +405,28 @@ class Message extends BaseMessage
      * @param string $fileName file name.
      * @param array $options options for embed file. Valid options are:
      *
-     * - fileName: name, which should be used to attach file.
+     * - fileName: name, which should be used to attach file and will be used as a CID.
      * - contentType: attached file MIME type.
      *
      * @return string attachment CID.
      */
     public function embed($fileName, array $options = [])
     {
-        // TODO: Implement embed() method.
+        if (!$fileName) {
+            return $this;
+        }
+
+        $mimeType = FileHelper::getMimeType($fileName);
+        if (strpos($mimeType, 'image') === 0) {
+            throw new \InvalidArgumentException("Only images can be embed. Given file {$fileName} is " . $mimeType);
+        }
+
+        $cid = $this->embedContent(file_get_contents($fileName), [
+            'fileName' => ArrayHelper::getValue($options, 'fileName', basename($fileName)),
+            'contentType' => ArrayHelper::getValue($options, 'contentType', $mimeType),
+        ]);
+
+        return $cid;
     }
 
     /**
@@ -396,14 +435,31 @@ class Message extends BaseMessage
      * @param string $content attachment file content.
      * @param array $options options for embed file. Valid options are:
      *
-     * - fileName: name, which should be used to attach file.
+     * - fileName: name, which should be used to attach file and will be used as a CID.
      * - contentType: attached file MIME type.
      *
      * @return string attachment CID.
      */
     public function embedContent($content, array $options = [])
     {
-        // TODO: Implement embedContent() method.
+        if (!$content) {
+            return $this;
+        }
+
+        $mimeType = $this->getBinaryMimeType($content);
+        if (strpos($mimeType, 'image') === 0) {
+            throw new \InvalidArgumentException("Only images can be embed. Given content is " . $mimeType);
+        }
+
+        $cid = 'image' . count($this->_images);
+
+        $this->_images[] = [
+            'type' => ArrayHelper::getValue($options, 'contentType', $mimeType),
+            'name' => ArrayHelper::getValue($options, 'fileName', $cid),
+            'data' => base64_encode($content),
+        ];
+
+        return $cid;
     }
 
     /**
@@ -426,6 +482,9 @@ class Message extends BaseMessage
     public function toArray()
     {
         $this->prepareCopyRecipients();
+
+        // default - application name + admin email (only if not a template)
+        $from = '';
 
         return [
             'options' => [
@@ -538,5 +597,17 @@ class Message extends BaseMessage
                 $recipient['header_to'] = str_replace('%mainRecipient', $main, $recipient['header_to']);
             }
         }
+    }
+
+    /**
+     * Returns the MIME type of the given binary data
+     * @param $content
+     * @return string the binary MIME type
+     */
+    private function getBinaryMimeType($content)
+    {
+        $finfo = new \finfo(FILEINFO_MIME);
+
+        return $finfo->buffer($content);
     }
 }
