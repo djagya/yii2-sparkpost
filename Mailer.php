@@ -70,9 +70,9 @@ class Mailer extends BaseMailer
     }
 
     /**
-     * Refer to https://support.sparkpost.com/customer/en/portal/articles/2140916-extended-error-codes
-     * to see detailed error descriptions.
+     * Refer to the error codes descriptions to see details.
      *
+     * @link https://support.sparkpost.com/customer/en/portal/articles/2140916-extended-error-codes Errors descriptions
      * @param Message $message
      * @return bool|void
      * @throws \Exception

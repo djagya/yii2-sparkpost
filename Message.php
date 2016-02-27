@@ -10,17 +10,44 @@
 
 namespace djagya\sparkpost;
 
+use yii\base\NotSupportedException;
 use yii\mail\BaseMessage;
 
 /**
- * Message is a representation of an message that will be consumed by Mailer.
+ * Message is a representation of a message that will be consumed by Mailer.
  *
+ * Refer to the API reference to see possible values.
+ * @link https://developers.sparkpost.com/api/#/reference/transmissions API Reference
  * @see Mailer
  * @author Danil Zakablukovskii <danil.kabluk@gmail.com>
  * @version 0.1
  */
 class Message extends BaseMessage
 {
+    /**
+     * Either a string with email address OR an array with 'name' and 'email' keys.
+     * @var string|array
+     */
+    private $_from;
+
+    /**
+     * Either a stored recipients list id:
+     * [
+     *  'list_id' => string,
+     * ]
+     *
+     * OR an array of recipients:
+     * [
+     *  'address' => string | ['email' => '', 'name' => ''],
+     * ]
+     *
+     * Refer to the sections "Recipient Attributes" and "Recipient Lists".
+     *
+     * @link https://developers.sparkpost.com/api/#/reference/recipient-lists Recipient Attributes
+     * @link https://developers.sparkpost.com/api/#/reference/recipient-lists Recipient Lists
+     * @var array
+     */
+    private $_to = [];
 
     /**
      * Returns the character set of this message.
@@ -28,17 +55,18 @@ class Message extends BaseMessage
      */
     public function getCharset()
     {
-        // TODO: Implement getCharset() method.
+        return null;
     }
 
     /**
-     * Sets the character set of this message.
+     * Not supported by SparkPost.
      * @param string $charset character set name.
      * @return $this self reference.
+     * @throws NotSupportedException
      */
     public function setCharset($charset)
     {
-        // TODO: Implement setCharset() method.
+        throw new NotSupportedException('Charset is not supported by SparkPost.');
     }
 
     /**
@@ -47,20 +75,36 @@ class Message extends BaseMessage
      */
     public function getFrom()
     {
-        // TODO: Implement getFrom() method.
+        if (is_array($this->_from)) {
+            return "{$this->_from['name']} <{$this->_from['email']}>";
+        } else {
+            return $this->_from;
+        }
     }
 
     /**
-     * Sets the message sender.
+     * Sets the message sender. Multiple senders is not allowed, only first sender will be added.
      * @param string|array $from sender email address.
-     * You may pass an array of addresses if this message is from multiple people.
      * You may also specify sender name in addition to email address using format:
      * `[email => name]`.
      * @return $this self reference.
      */
     public function setFrom($from)
     {
-        // TODO: Implement setFrom() method.
+        if (is_string($from)) {
+            $this->_from = $from;
+        }
+
+        if (is_array($from)) {
+            reset($from);
+
+            $this->_from = [
+                'name' => current($from),
+                'email' => key($from),
+            ];
+        }
+
+        return $this;
     }
 
     /**
@@ -69,11 +113,25 @@ class Message extends BaseMessage
      */
     public function getTo()
     {
-        // TODO: Implement getTo() method.
+        if (isset($this->_to['list_id'])) {
+            return "Recipient List ID: {$this->_to['list_id']}";
+        }
+
+        $addresses = [];
+        foreach ($this->_to as $item) {
+            if (is_array($item['address'])) {
+                $addresses[] = $item['address'];
+            } else {
+                $addresses[] = "{$item['address']['name']} <{$item['address']['email']}>";
+            }
+        }
+
+        return implode(', ', $addresses);
     }
 
     /**
      * Sets the message recipient(s).
+     *
      * @param string|array $to receiver email address.
      * You may pass an array of addresses if multiple recipients should receive this message.
      * You may also specify receiver name in addition to email address using format:
@@ -82,7 +140,42 @@ class Message extends BaseMessage
      */
     public function setTo($to)
     {
-        // TODO: Implement setTo() method.
+        if (is_string($to)) {
+            $this->_to = [
+                ['address' => $to]
+            ];
+        }
+
+        if (is_array($to)) {
+            foreach ($to as $email => $name) {
+                if (is_int($email)) {
+                    $address = ['email' => $name];
+                } else {
+                    $address = [
+                        'email' => $email,
+                        'name' => $name,
+                    ];
+                }
+
+                $this->_to[] = $address;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set stored recipients list id to use instead usual $to.
+     *
+     * @link https://developers.sparkpost.com/api/#/reference/recipient-lists Recipient Lists
+     * @param string $listId Stored recipients list id.
+     * @return $this
+     */
+    public function setStoredRecipientsList($listId)
+    {
+        $this->_to = ['list_id' => $listId];
+
+        return $this;
     }
 
     /**
