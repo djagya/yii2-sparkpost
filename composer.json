@@ -13,7 +13,8 @@
   "require": {
     "php": ">=5.3",
     "yiisoft/yii2": "*",
-    "sparkpost/php-sparkpost": "~1.0"
+    "sparkpost/php-sparkpost": "~1.0",
+    "guzzlehttp/guzzle": "~6.0"
   },
   "license": "GPL-3.0",
   "authors": [
