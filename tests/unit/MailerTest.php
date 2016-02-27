@@ -1,5 +1,7 @@
 <?php
 
+use djagya\sparkpost\Mailer;
+
 class MailerTest extends \Codeception\TestCase\Test
 {
     /**
@@ -7,16 +9,52 @@ class MailerTest extends \Codeception\TestCase\Test
      */
     protected $tester;
 
-    protected function _before()
+    public function testApiKeyRequired()
     {
+        $this->setExpectedException('\yii\base\InvalidConfigException');
+        new Mailer();
     }
 
-    protected function _after()
+    public function testApiKeyIsString()
     {
+        $this->setExpectedException('\yii\base\InvalidConfigException');
+        new Mailer(['apiKey' => []]);
     }
 
-    // tests
-    public function testMe()
+    public function testDefaultEmailAdminEmailRequired()
     {
+        $this->setExpectedException('\yii\base\InvalidConfigException');
+        new Mailer(['apiKey' => 'key']);
+    }
+
+    public function testNoDefaultEmail()
+    {
+        $mailer = new Mailer(['apiKey' => 'key', 'useDefaultEmail' => false]);
+
+        $this->assertEmpty($mailer->defaultEmail);
+        $message = $mailer->compose();
+        $this->assertEmpty($message->getReplyTo());
+    }
+
+    public function testDefaultEmail()
+    {
+        $mailer = new Mailer(['apiKey' => 'key']);
+
+        Yii::$app->params['adminEmail'] = 'test@mail.com';
+
+        $email = Yii::$app->name . '<' . Yii::$app->params['adminEmail'] . '>';
+
+        $this->assertEquals($mailer->defaultEmail, $email);
+        $message = $mailer->compose();
+        $this->assertEquals($message->getReplyTo(), $email);
+    }
+
+    public function testSandboxInheritance()
+    {
+        $mailer = new Mailer(['apiKey' => 'key', 'sandbox' => true]);
+
+        $this->assertTrue($mailer->sandbox);
+        $message = $mailer->compose();
+        $this->assertTrue($message->getSandbox());
     }
 }

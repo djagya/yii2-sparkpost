@@ -553,7 +553,7 @@ class Message extends BaseMessage
     /**
      * @return boolean
      */
-    public function isSandbox()
+    public function getSandbox()
     {
         return ArrayHelper::getValue($this->_options, 'sandbox', false);
     }

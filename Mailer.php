@@ -97,19 +97,9 @@ class Mailer extends BaseMailer
 
     public function compose($view = null, array $params = [])
     {
-        return parent::compose($view, $params);
-    }
+        /** @var Message $message */
+        $message = parent::compose($view, $params);
 
-    /**
-     * Refer to the error codes descriptions to see details.
-     *
-     * @link https://support.sparkpost.com/customer/en/portal/articles/2140916-extended-error-codes Errors descriptions
-     * @param Message $message
-     * @return bool
-     * @throws \Exception
-     */
-    protected function sendMessage($message)
-    {
         if ($this->sandbox) {
             $message->setSandbox(true);
         }
@@ -124,6 +114,19 @@ class Mailer extends BaseMailer
             }
         }
 
+        return $message;
+    }
+
+    /**
+     * Refer to the error codes descriptions to see details.
+     *
+     * @link https://support.sparkpost.com/customer/en/portal/articles/2140916-extended-error-codes Errors descriptions
+     * @param Message $message
+     * @return bool
+     * @throws \Exception
+     */
+    protected function sendMessage($message)
+    {
         try {
             $result = $this->_sparkPost->transmission->send($message->toSparkPostArray());
 
@@ -146,5 +149,13 @@ class Mailer extends BaseMailer
             \Yii::error($e->getMessage(), self::LOG_CATEGORY);
             throw new \Exception('An error occurred in mailer, check your application logs.', 500, $e);
         }
+    }
+
+    /**
+     * @return SparkPost
+     */
+    public function getSparkPost()
+    {
+        return $this->_sparkPost;
     }
 }
