@@ -9,16 +9,21 @@ class MailerTest extends \Codeception\TestCase\Test
      */
     protected $tester;
 
+    public function _before()
+    {
+        new \yii\console\Application(['id' => 'app', 'basePath' => __DIR__]);
+    }
+
     public function testApiKeyRequired()
     {
         $this->setExpectedException('\yii\base\InvalidConfigException');
-        new Mailer();
+        new Mailer(['useDefaultEmail' => false]);
     }
 
     public function testApiKeyIsString()
     {
         $this->setExpectedException('\yii\base\InvalidConfigException');
-        new Mailer(['apiKey' => []]);
+        new Mailer(['apiKey' => [], 'useDefaultEmail' => false]);
     }
 
     public function testDefaultEmailAdminEmailRequired()
@@ -38,9 +43,9 @@ class MailerTest extends \Codeception\TestCase\Test
 
     public function testDefaultEmail()
     {
-        $mailer = new Mailer(['apiKey' => 'key']);
-
         Yii::$app->params['adminEmail'] = 'test@mail.com';
+
+        $mailer = new Mailer(['apiKey' => 'key']);
 
         $email = Yii::$app->name . '<' . Yii::$app->params['adminEmail'] . '>';
 
@@ -51,7 +56,7 @@ class MailerTest extends \Codeception\TestCase\Test
 
     public function testSandboxInheritance()
     {
-        $mailer = new Mailer(['apiKey' => 'key', 'sandbox' => true]);
+        $mailer = new Mailer(['apiKey' => 'key', 'useDefaultEmail' => false, 'sandbox' => true]);
 
         $this->assertTrue($mailer->sandbox);
         $message = $mailer->compose();
