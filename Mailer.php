@@ -36,6 +36,14 @@ class Mailer extends BaseMailer
     public $apiKey;
 
     /**
+     * Whether to use the sandbox mode.
+     * You can send up to 50 messages.
+     * You must set your 'from' address as a sandbox domain.
+     * @var bool
+     */
+    public $sandbox = false;
+
+    /**
      * Additional SparkPost config
      * @see SparkPost::$apiDefaults
      * @var array
@@ -74,13 +82,17 @@ class Mailer extends BaseMailer
      *
      * @link https://support.sparkpost.com/customer/en/portal/articles/2140916-extended-error-codes Errors descriptions
      * @param Message $message
-     * @return bool|void
+     * @return bool
      * @throws \Exception
      */
     protected function sendMessage($message)
     {
+        if ($this->sandbox) {
+            $message->setSandbox(true);
+        }
+
         try {
-            $result = $this->_sparkPost->transmission->send($message->toArray());
+            $result = $this->_sparkPost->transmission->send($message->toSparkPostArray());
 
             if (ArrayHelper::getValue($result, 'total_accepted_recipients') === 0) {
                 \Yii::info('Transmission #' . ArrayHelper::getValue($result, 'id') . ' was rejected: ' .

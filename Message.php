@@ -18,7 +18,8 @@ use yii\mail\BaseMessage;
 /**
  * Message is a representation of a message that will be consumed by Mailer.
  *
- * Refer to the API reference to see possible values.
+ * Templates are supported and, if used, will override specified content data with template's ones.
+ *
  * @link https://developers.sparkpost.com/api/#/reference/transmissions API Reference
  * @see Mailer
  * @author Danil Zakablukovskii <danil.kabluk@gmail.com>
@@ -42,12 +43,11 @@ class Message extends BaseMessage
      * [
      *  'address' => string | ['email' => '', 'name' => '', 'header_to' => ''],
      * ],
-     * where 'header_to' is used for Cc and Bcc recipients.
+     * where 'header_to' is used to mark Cc and Bcc recipients.
      *
      * Refer to the sections "Recipient Attributes" and "Recipient Lists".
      *
-     * @link https://developers.sparkpost.com/api/#/reference/recipient-lists Recipient Attributes
-     * @link https://developers.sparkpost.com/api/#/reference/recipient-lists Recipient Lists
+     * @link https://developers.sparkpost.com/api/#/reference/recipient-lists Recipient Lists and Attributes
      * @var array
      */
     private $_to = [];
@@ -60,7 +60,7 @@ class Message extends BaseMessage
     /**
      * Headers other than "Subject", "From", "To", and "Reply-To":
      * [
-     *  'Cc' => string,
+     *  'Cc' => string, // must be set (only if a template isn't used) to mark some recipients as CC recipients
      * ]
      * @var array
      */
@@ -68,13 +68,89 @@ class Message extends BaseMessage
 
     private $_subject;
 
+    /**
+     * If specified - template will be used instead usual text/html body.
+     * These fields will not be used for message with specified template:
+     * html, text, subject, from, reply_to, headers, attachments, inline_images
+     *
+     * @var string
+     */
+    private $_templateId;
+
     private $_text;
 
     private $_html;
 
+    /**
+     * Attachments array:
+     * [
+     *  'type' => string, // MIME type
+     *  'name' => string, // 255 bytes
+     *  'data' => string, // base64 encoded
+     * ]
+     * @var array
+     */
     private $_attachments = [];
 
+    /**
+     * Inline (embed) images array:
+     * [
+     *  'type' => string, // MIME type
+     *  'name' => string, // 255 bytes
+     *  'data' => string, // base64 encoded
+     * ]
+     * @var array
+     */
     private $_images = [];
+
+    /**
+     * Additional SparkPost message options:
+     * [
+     *  'start_time' => string, // Format YYYY-MM-DDTHH:MM:SS+-HH:MM or "now". Example: '2015-02-11T08:00:00-04:00'.
+     *  'open_tracking' => true,
+     *  'click_tracking' => true,
+     *  'transactional' => false,
+     *  'sandbox' => false,
+     *  'skip_suppression' => false,
+     * ]
+     *
+     * Refer to the section "Options Attributes".
+     *
+     * @link https://developers.sparkpost.com/api/#/reference/transmissions Options Attributes
+     * @var array
+     */
+    private $_options = [];
+
+    /**
+     * Campaign ID, 64 bytes max
+     * @var string
+     */
+    private $_campaign;
+
+    /**
+     * Description of the Transmission, 1024 bytes max
+     * @var string
+     */
+    private $_description;
+
+    /**
+     * 1000 bytes max
+     * @var array
+     */
+    private $_metadata = [];
+
+    /**
+     * Substitution data, will be used in message body or template.
+     * Key-Value pairs.
+     * @var array
+     */
+    private $_substitutionData = [];
+
+    /**
+     * Required only for SparkPost Elite
+     * @var string
+     */
+    private $_returnPath;
 
     /**
      * Returns the character set of this message.
@@ -475,56 +551,154 @@ class Message extends BaseMessage
     }
 
     /**
+     * @return boolean
+     */
+    public function isSandbox()
+    {
+        return ArrayHelper::getValue($this->_options, 'sandbox', false);
+    }
+
+    /**
+     * @param boolean $sandbox
+     */
+    public function setSandbox($sandbox)
+    {
+        $this->_options['sandbox'] = $sandbox;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->_options;
+    }
+
+    /**
+     * Possible values:
+     * [
+     *  'start_time' => string, // Format YYYY-MM-DDTHH:MM:SS+-HH:MM or "now". Example: '2015-02-11T08:00:00-04:00'.
+     *  'open_tracking' => bool,
+     *  'click_tracking' => bool,
+     *  'transactional' => bool,
+     *  'sandbox' => bool,
+     *  'skip_suppression' => bool,
+     * ]
+     *
+     * @param array $options
+     */
+    public function setOptions($options)
+    {
+        $this->_options = $options;
+    }
+
+    /**
+     * @return string 64 bytes max
+     */
+    public function getCampaign()
+    {
+        return $this->_campaign;
+    }
+
+    /**
+     * @param string $campaign
+     */
+    public function setCampaign($campaign)
+    {
+        $this->_campaign = $campaign;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->_description;
+    }
+
+    /**
+     * @param string $description 1024 bytes max
+     */
+    public function setDescription($description)
+    {
+        $this->_description = $description;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetadata()
+    {
+        return $this->_metadata;
+    }
+
+    /**
+     * @param array $metadata
+     */
+    public function setMetadata($metadata)
+    {
+        $this->_metadata = $metadata;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSubstitutionData()
+    {
+        return $this->_substitutionData;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setSubstitutionData($data)
+    {
+        $this->_substitutionData = $data;
+    }
+
+    /**
      * Prepares the message and gives it's array representation to send it through SparkSpot API
      * @see Transmission::send()
      * @return array
      */
-    public function toArray()
+    public function toSparkPostArray()
     {
         $this->prepareCopyRecipients();
 
-        // default - application name + admin email (only if not a template)
-        $from = '';
-
-        return [
-            'options' => [
-                'start_time' => '',
-                'open_tracking' => true,
-                'click_tracking' => true,
-                'transactional' => false,
-                'sandbox' => false,
-                'skip_suppression' => false,
-            ],
+        $messageArray = [
+            'options' => $this->_options,
             'recipients' => $this->_to,
-            'campaign_id' => '', // 64 byte
-            'description' => '', // 1024 bytes
-            'metadata' => [],
-            'substitutionData' => [],
-            'return_path' => '', // required
-            // 20 Mb
-            'content' => [
-                // if template
-                'template_id' => '', // 64 bytes
-                'use_draft_template' => false,
-                // if not a template
-                'html' => '',
-                'text' => '',
-                'subject' => '',
-                'from' => '',
-                'reply_to' => '',
-                'headers' => '',
-                'attachments' => [
-                    'type' => '',
-                    'name' => '', // 255 bytes
-                    'data' => '',
-                ],
-                'inline_images' => [
-                    'type' => '',
-                    'name' => '', // 255 bytes
-                    'data' => '',
-                ],
-            ],
+            'campaign_id' => $this->_campaign,
+            'description' => $this->_description, // 1024 bytes
+            'metadata' => $this->_metadata,
+            'substitutionData' => $this->_substitutionData,
+            'return_path' => $this->_returnPath,
+            'content' => [],
         ];
+
+        if ($this->_templateId) {
+            $messageArray['content'] = [
+                'template_id' => $this->_templateId,
+                'use_draft_template' => false,
+            ];
+        } else {
+            $content = [
+                'subject' => $this->_subject,
+                'from' => $this->_from,
+                'reply_to' => $this->_replyTo,
+                'headers' => $this->_headers,
+                'attachments' => $this->_attachments,
+                'inline_images' => $this->_images,
+            ];
+
+            if ($this->_html) {
+                $content['html'] = $this->_html;
+            } else {
+                $content['text'] = $this->_text;
+            }
+
+            $messageArray['content'] = $content;
+        }
     }
 
     /**
