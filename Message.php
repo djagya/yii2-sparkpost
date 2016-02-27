@@ -260,4 +260,31 @@ class Message extends BaseMessage
     {
         // TODO: Implement toString() method.
     }
+
+    /**
+     * @see Transmission::send()
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'campaign' => '',
+            'metadata' => [],
+            'substitutionData' => [],
+            'description' => '',
+            'replyTo' => '',
+            'subject' => '',
+            'from' => '',
+            'html' => '',
+            'text' => '',
+            'rfc822' => '',
+            'customHeaders' => [],
+            'recipients' => [],
+            'recipientList' => '',
+            'template' => '',
+            'trackOpens' => false,
+            'trackClicks' => false,
+            'useDraftTemplate' => false
+        ];
+    }
 }
