@@ -771,7 +771,7 @@ class Message extends BaseMessage
 
     /**
      * Prepares the message and gives it's array representation to send it through SparkSpot API
-     * @see Transmission::send()
+     * @see \SparkPost\Transmission::send()
      * @return array
      */
     public function toSparkPostArray()

@@ -28,8 +28,7 @@ class Mailer extends BaseMailer
     const LOG_CATEGORY = 'sparkpost-mailer';
 
     /**
-     * SparkPost API Key, required.
-     * @var string
+     * @var string SparkPost API Key, required.
      */
     public $apiKey;
 
@@ -37,35 +36,41 @@ class Mailer extends BaseMailer
      * Whether to use the sandbox mode.
      * You can send up to 50 messages.
      * You must set your 'from' address as a sandbox domain.
-     * @var bool
+     * @var bool sandbox mode
      */
     public $sandbox = false;
 
     /**
      * Additional SparkPost config
-     * @see SparkPost::$apiDefaults
-     * @var array
+     * @see \SparkPost\SparkPost::$apiDefaults
+     * @var array sparkpost config
      */
     public $sparkpostConfig = [];
 
     /**
      * Whether to use default email for 'from' and 'reply to' fields if they are empty.
-     * @var bool
+     * @var bool default email usage
      */
     public $useDefaultEmail = true;
 
     /**
      * Default sender email.
      * If not specified, application name + params[adminEmail] will be used.
-     * @var string
+     * @var string default email
      */
     public $defaultEmail;
 
+    /**
+     * @inheritdoc
+     */
     public $messageClass = 'djagya\sparkpost\Message';
 
     /** @var SparkPost */
     private $_sparkPost;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if (!$this->apiKey) {
@@ -93,6 +98,9 @@ class Mailer extends BaseMailer
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function compose($view = null, array $params = [])
     {
         /** @var Message $message */
