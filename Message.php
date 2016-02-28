@@ -22,7 +22,6 @@ use yii\mail\BaseMessage;
  * @link https://developers.sparkpost.com/api/#/reference/transmissions API Reference
  * @see Mailer
  * @author Danil Zakablukovskii <danil.kabluk@gmail.com>
- * @version 0.1
  */
 class Message extends BaseMessage
 {

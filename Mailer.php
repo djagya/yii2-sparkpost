@@ -22,7 +22,6 @@ use yii\mail\BaseMailer;
  *
  * @see Message
  * @author Danil Zakablukovskii <danil.kabluk@gmail.com>
- * @version 0.1
  */
 class Mailer extends BaseMailer
 {
