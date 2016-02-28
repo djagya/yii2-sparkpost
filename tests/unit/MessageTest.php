@@ -9,10 +9,7 @@ class MessageTest extends \Codeception\TestCase\Test
 
     protected function _before()
     {
-    }
-
-    protected function _after()
-    {
+        new \yii\console\Application(['id' => 'app', 'basePath' => __DIR__]);
     }
 
     // tests
