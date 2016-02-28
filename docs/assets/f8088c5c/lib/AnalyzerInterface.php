@@ -14,15 +14,15 @@ namespace cebe\jssearch;
  */
 interface AnalyzerInterface
 {
-    /**
-     * Analyzes a string and returns an array of the following format:
-     *
-     * TODO
-     * ```
-     * ```
-     *
-     * @param string $string the string to analyze
-     * @return array
-     */
-    public function analyze($string, TokenizerInterface $tokenizer);
+	/**
+	 * Analyzes a string and returns an array of the following format:
+	 *
+	 * TODO
+	 * ```
+	 * ```
+	 *
+	 * @param string $string the string to analyze
+	 * @return array
+	 */
+	public function analyze($string, TokenizerInterface $tokenizer);
 }
