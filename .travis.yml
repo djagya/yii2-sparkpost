@@ -12,3 +12,6 @@ install:
 script:
   - codecept build
   - codecept run
+
+notifications:
+  email: false
