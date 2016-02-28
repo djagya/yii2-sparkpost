@@ -63,3 +63,8 @@ Logs
 ----
 
 All mailer log messages are logged by `\Yii::error()`, `\Yii::warning()`, `\Yii::info()` under special category - `sparkpost-mailer`.
+
+License
+-------
+
+The code for yii2-sparkpost is distributed under the terms of the MIT license (see [LICENSE](LICENSE)).
