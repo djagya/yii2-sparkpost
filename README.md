@@ -39,14 +39,25 @@ Usage
 -----
 
 
-Mandrill Templates
-------------------
-
 
 Unit Testing
 ------------
+
+You must have Codeception installed to be able to run unit tests.
+
+To run tests:  
+```
+php /vendor/bin/codecept run
+```
+
+If you want to try to send a real message, you should add APIKEY environment variable (it should be a real API key from SparkPost).  
+Example:  
+```
+APIKEY=your_api_key php /vendor/bin/codecept run
+```
 
 
 Logs
 ----
 
+All mailer log messages are logged by `\Yii::error()`, `\Yii::warning()`, `\Yii::info()` under special category - `sparkpost-mailer`.
