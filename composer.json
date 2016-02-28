@@ -11,7 +11,7 @@
     "mailer"
   ],
   "require": {
-    "php": ">=5.3",
+    "php": ">=5.5",
     "yiisoft/yii2": "*",
     "sparkpost/php-sparkpost": "~1.0",
     "guzzlehttp/guzzle": "~6.0"
