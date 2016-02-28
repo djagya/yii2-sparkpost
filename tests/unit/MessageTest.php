@@ -15,5 +15,6 @@ class MessageTest extends \Codeception\TestCase\Test
     // tests
     public function testMe()
     {
+        // test
     }
 }
