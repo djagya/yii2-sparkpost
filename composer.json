@@ -1,7 +1,7 @@
 {
-  "name": "danil/yii2-sendgrid",
+  "name": "danil/yii2-sparkpost",
   "version": "0.1",
-  "description": "A library provides integration with SendGrid mail service",
+  "description": "A library provides Yii2 integration with SparkPost mail service",
   "keywords": [
     "sparkpost",
     "email",
