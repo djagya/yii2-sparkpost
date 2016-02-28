@@ -28,6 +28,37 @@ use yii\mail\BaseMessage;
 class Message extends BaseMessage
 {
     /**
+     * Helper map for message composing
+     * @var array
+     */
+    static private $messageAttributesMap = [
+        'campaign',
+        'metadata',
+        'substitutionData',
+        'description',
+        'returnPath',
+        'replyTo',
+        'subject',
+        'from',
+        'html',
+        'text',
+        'rfc822',
+        'customHeaders' => 'headers',
+        'recipients' => 'to',
+        'recipientList' => 'to.list_id',
+        'template' => 'templateId',
+        'trackOpens' => 'options.open_tracking',
+        'trackClicks' => 'options.click_tracking',
+        'useDraftTemplate',
+
+        // TODO wait for sparkpost lib add these values to the mapping
+//        'start_time',
+//        'sandbox',
+//        'attachments',
+//        'inline_images' => 'images',
+    ];
+
+    /**
      * Either a string with email address OR an array with 'name' and 'email' keys.
      * @var string|array
      */
@@ -77,9 +108,25 @@ class Message extends BaseMessage
      */
     private $_templateId;
 
+    private $_useDraftTemplate = false;
+
+    /**
+     * Should be set if html or rfc822 are not set
+     * @var string
+     */
     private $_text;
 
+    /**
+     * Should be set if text or rfc822 are not set
+     * @var string
+     */
     private $_html;
+
+    /**
+     * Should be set if text or html are not set
+     * @var string
+     */
+    private $_rfc822;
 
     /**
      * Attachments array:
@@ -217,10 +264,10 @@ class Message extends BaseMessage
                 continue;
             }
 
-            if (is_array($item['address'])) {
+            if (isset($item['address']['name'])) {
                 $addresses[$item['address']['email']] = $item['address']['name'];
             } else {
-                $addresses[] = $item['address'];
+                $addresses[] = $item['address']['email'];
             }
         }
 
@@ -414,6 +461,8 @@ class Message extends BaseMessage
     public function setTextBody($text)
     {
         $this->_text = $text;
+
+        return $this;
     }
 
     /**
@@ -424,6 +473,8 @@ class Message extends BaseMessage
     public function setHtmlBody($html)
     {
         $this->_html = $html;
+
+        return $this;
     }
 
     /**
@@ -551,6 +602,22 @@ class Message extends BaseMessage
     }
 
     /**
+     * @return string
+     */
+    public function getTemplateId()
+    {
+        return $this->_templateId;
+    }
+
+    /**
+     * @param string $templateId
+     */
+    public function setTemplateId($templateId)
+    {
+        $this->_templateId = $templateId;
+    }
+
+    /**
      * @return boolean
      */
     public function getSandbox()
@@ -657,48 +724,86 @@ class Message extends BaseMessage
     }
 
     /**
+     * @return string
+     */
+    public function getReturnPath()
+    {
+        return $this->_returnPath;
+    }
+
+    /**
+     * @param string $returnPath
+     */
+    public function setReturnPath($returnPath)
+    {
+        $this->_returnPath = $returnPath;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isUseDraftTemplate()
+    {
+        return $this->_useDraftTemplate;
+    }
+
+    /**
+     * @param boolean $useDraftTemplate
+     */
+    public function setUseDraftTemplate($useDraftTemplate)
+    {
+        $this->_useDraftTemplate = $useDraftTemplate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRfc822()
+    {
+        return $this->_rfc822;
+    }
+
+    /**
+     * @param string $rfc822
+     */
+    public function setRfc822($rfc822)
+    {
+        $this->_rfc822 = $rfc822;
+    }
+
+    /**
      * Prepares the message and gives it's array representation to send it through SparkSpot API
      * @see Transmission::send()
      * @return array
      */
     public function toSparkPostArray()
     {
+
         $this->prepareCopyRecipients();
 
-        $messageArray = [
-            'options' => $this->_options,
-            'recipients' => $this->_to,
-            'campaign_id' => $this->_campaign,
-            'description' => $this->_description, // 1024 bytes
-            'metadata' => $this->_metadata,
-            'substitutionData' => $this->_substitutionData,
-            'return_path' => $this->_returnPath,
-            'content' => [],
-        ];
+        $messageArray = [];
 
-        if ($this->_templateId) {
-            $messageArray['content'] = [
-                'template_id' => $this->_templateId,
-                'use_draft_template' => false,
-            ];
-        } else {
-            $content = [
-                'subject' => $this->_subject,
-                'from' => $this->_from,
-                'reply_to' => $this->_replyTo,
-                'headers' => $this->_headers,
-                'attachments' => $this->_attachments,
-                'inline_images' => $this->_images,
-            ];
-
-            if ($this->_html) {
-                $content['html'] = $this->_html;
+        foreach (self::$messageAttributesMap as $k => $v) {
+            if (is_int($k)) {
+                $attributeName = '_' . $v;
+                $k = $v;
             } else {
-                $content['text'] = $this->_text;
+                $attributeName = '_' . $v;
             }
 
-            $messageArray['content'] = $content;
+            if (strpos($attributeName, '.') !== false) {
+                list($attributeName, $key) = explode('.', $attributeName);
+                $value = ArrayHelper::getValue($this->{$attributeName}, $key);
+            } else {
+                $value = $this->$attributeName;
+            }
+
+            if ($value || is_bool($value)) {
+                $messageArray[$k] = $value;
+            }
         }
+
+        return $messageArray;
     }
 
     /**
@@ -713,8 +818,6 @@ class Message extends BaseMessage
         }
 
         foreach ($emails as $email => $name) {
-            $address = [];
-
             if (is_int($email)) {
                 $address['email'] = $name;
             } else {
@@ -760,15 +863,16 @@ class Message extends BaseMessage
         $main = '';
         // find the main recipient
         foreach ($this->_to as $recipient) {
-            if (!$main && !isset($recipient['header_to'])) {
-                $main = $recipient['email'];
+            if (!$main && !isset($recipient['address']['header_to'])) {
+                $main = $recipient['address']['email'];
                 break;
             }
         }
 
         foreach ($this->_to as &$recipient) {
-            if (isset($recipient['header_to'])) {
-                $recipient['header_to'] = str_replace('%mainRecipient', $main, $recipient['header_to']);
+            if (isset($recipient['address']['header_to'])) {
+                $recipient['address']['header_to'] = str_replace('%mainRecipient', $main,
+                    $recipient['address']['header_to']);
             }
         }
     }
