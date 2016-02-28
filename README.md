@@ -1,6 +1,6 @@
 SparkPost API Yii2 Mailer
 ======================
-SparkPost API Mailer for Yii2
+SparkPost API Mailer for Yii2  
 [![Latest Stable Version](https://poser.pugx.org/djagya/yii2-sparkpost/v/stable)](https://packagist.org/packages/djagya/yii2-sparkpost) [![Build Status](https://travis-ci.org/djagya/yii2-sparkpost.svg)](https://travis-ci.org/djagya/yii2-sparkpost) [![Total Downloads](https://poser.pugx.org/djagya/yii2-sparkpost/downloads)](https://packagist.org/packages/djagya/yii2-sparkpost) [![License](https://poser.pugx.org/djagya/yii2-sparkpost/license)](https://packagist.org/packages/djagya/yii2-sparkpost)
 
 
