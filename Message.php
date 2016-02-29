@@ -338,20 +338,26 @@ class Message extends BaseMessage
     {
         $addresses = [];
         foreach ($this->_to as $item) {
+            if (is_string($item['address'])) {
+                continue;
+            } else {
+                $item = $item['address'];
+            }
+
             if (!isset($item['header_to'])) {
                 continue;
             }
 
             // fixme: better way to find substring
             // if email is not represented in Cc header - it's the Bcc email
-            if (!isset($this->_headers['Cc']) || strpos($this->_headers['Cc'], $item['header_to']) === false) {
+            if (!isset($this->_headers['Cc']) || strpos($this->_headers['Cc'], $item['email']) === false) {
                 continue;
             }
 
-            if (is_array($item['address'])) {
-                $addresses[$item['address']['email']] = $item['address']['email'];
+            if (isset($item['name'])) {
+                $addresses[$item['name']] = $item['email'];
             } else {
-                $addresses[] = $item['address'];
+                $addresses[] = $item['email'];
             }
         }
 
@@ -391,24 +397,30 @@ class Message extends BaseMessage
     {
         $addresses = [];
         foreach ($this->_to as $item) {
+            if (is_string($item['address'])) {
+                continue;
+            } else {
+                $item = $item['address'];
+            }
+
             if (!isset($item['header_to'])) {
                 continue;
             }
 
             // fixme: better way to find substring
             // if email is represented in the Cc header, it's not the Bcc email
-            if (isset($this->_headers['Cc']) && strpos($this->_headers['Cc'], $item['header_to']) !== false) {
+            if (isset($this->_headers['Cc']) && strpos($this->_headers['Cc'], $item['email']) !== false) {
                 continue;
             }
 
-            if (is_array($item['address'])) {
-                $addresses[$item['address']['email']] = $item['address']['email'];
+            if (isset($item['name'])) {
+                $addresses[$item['name']] = $item['email'];
             } else {
-                $addresses[] = $item['address'];
+                $addresses[] = $item['email'];
             }
         }
 
-        return implode(', ', $addresses);
+        return $addresses;
     }
 
     /**

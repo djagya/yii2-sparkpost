@@ -13,7 +13,7 @@ class MailerTest extends \Codeception\TestCase\Test
     {
         new \yii\console\Application(['id' => 'app', 'basePath' => __DIR__]);
     }
-
+    
     public function testApiKeyRequired()
     {
         $this->setExpectedException('\yii\base\InvalidConfigException');
