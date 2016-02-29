@@ -461,10 +461,13 @@ class Message extends BaseMessage
 
     /**
      * @param string $templateId
+     * @return $this
      */
     public function setTemplateId($templateId)
     {
         $this->_templateId = $templateId;
+
+        return $this;
     }
 
     /**
@@ -501,10 +504,13 @@ class Message extends BaseMessage
 
     /**
      * @param string $rfc822
+     * @return $this
      */
     public function setRfc822($rfc822)
     {
         $this->_rfc822 = $rfc822;
+
+        return $this;
     }
 
     /**
@@ -641,10 +647,13 @@ class Message extends BaseMessage
 
     /**
      * @param boolean $sandbox
+     * @return $this
      */
     public function setSandbox($sandbox)
     {
         $this->_options['sandbox'] = $sandbox;
+
+        return $this;
     }
 
     /**
@@ -667,10 +676,13 @@ class Message extends BaseMessage
      * ]
      *
      * @param array $options
+     * @return $this
      */
     public function setOptions($options)
     {
         $this->_options = $options;
+
+        return $this;
     }
 
     /**
@@ -683,10 +695,13 @@ class Message extends BaseMessage
 
     /**
      * @param string $campaign
+     * @return $this
      */
     public function setCampaign($campaign)
     {
         $this->_campaign = $campaign;
+
+        return $this;
     }
 
     /**
@@ -699,10 +714,13 @@ class Message extends BaseMessage
 
     /**
      * @param string $description 1024 bytes max
+     * @return $this
      */
     public function setDescription($description)
     {
         $this->_description = $description;
+
+        return $this;
     }
 
     /**
@@ -715,10 +733,13 @@ class Message extends BaseMessage
 
     /**
      * @param array $metadata
+     * @return $this
      */
     public function setMetadata($metadata)
     {
         $this->_metadata = $metadata;
+
+        return $this;
     }
 
     /**
@@ -731,10 +752,13 @@ class Message extends BaseMessage
 
     /**
      * @param array $data
+     * @return $this
      */
     public function setSubstitutionData($data)
     {
         $this->_substitutionData = $data;
+
+        return $this;
     }
 
     /**
@@ -747,10 +771,13 @@ class Message extends BaseMessage
 
     /**
      * @param string $returnPath
+     * @return $this
      */
     public function setReturnPath($returnPath)
     {
         $this->_returnPath = $returnPath;
+
+        return $this;
     }
 
     /**
@@ -763,10 +790,13 @@ class Message extends BaseMessage
 
     /**
      * @param boolean $useDraftTemplate
+     * @return $this
      */
     public function setUseDraftTemplate($useDraftTemplate)
     {
         $this->_useDraftTemplate = $useDraftTemplate;
+
+        return $this;
     }
 
     /**
