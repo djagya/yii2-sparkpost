@@ -89,7 +89,7 @@ class Message extends BaseMessage
     /**
      * Headers other than "Subject", "From", "To", and "Reply-To":
      * [
-     *  'Cc' => string, // must be set (only if a template isn't used) to mark some recipients as CC recipients
+     *  'Cc' => string, // will be set (only if a template isn't used) to mark some recipients as CC recipients
      * ]
      * @var array
      */
@@ -251,21 +251,23 @@ class Message extends BaseMessage
      */
     public function getTo()
     {
-        if (isset($this->_to['list_id'])) {
+        if ($this->isListUsed()) {
             return [$this->_to['list_id']];
         }
 
         $addresses = [];
         foreach ($this->_to as $item) {
+            $item = $item['address'];
+
             // skip recipients with set header_to, i.e. CC and BCC recipients
             if (isset($item['header_to'])) {
                 continue;
             }
 
-            if (isset($item['address']['name'])) {
-                $addresses[$item['address']['email']] = $item['address']['name'];
+            if (isset($item['name'])) {
+                $addresses[$item['email']] = $item['name'];
             } else {
-                $addresses[] = $item['address']['email'];
+                $addresses[] = $item['email'];
             }
         }
 
@@ -295,7 +297,7 @@ class Message extends BaseMessage
      * @param string $listId Stored recipients list id.
      * @return $this
      */
-    public function setStoredRecipientsList($listId)
+    public function setRecipientsListId($listId)
     {
         $this->_to = ['list_id' => $listId];
 
@@ -321,11 +323,9 @@ class Message extends BaseMessage
      */
     public function setReplyTo($replyTo)
     {
-        if (is_string($replyTo)) {
-            $this->_replyTo = $replyTo;
-        } elseif (is_array($replyTo)) {
-            $this->_replyTo = $this->emailsToString($replyTo);
-        }
+        $this->_replyTo = is_array($replyTo) ?
+            $this->emailsToString($replyTo) :
+            $replyTo;
 
         return $this;
     }
@@ -336,21 +336,15 @@ class Message extends BaseMessage
      */
     public function getCc()
     {
+        if ($this->isListUsed()) {
+            return [];
+        }
+
         $addresses = [];
         foreach ($this->_to as $item) {
-            if (is_string($item['address'])) {
-                continue;
-            } else {
-                $item = $item['address'];
-            }
+            $item = $item['address'];
 
-            if (!isset($item['header_to'])) {
-                continue;
-            }
-
-            // fixme: better way to find substring
-            // if email is not represented in Cc header - it's the Bcc email
-            if (!isset($this->_headers['Cc']) || strpos($this->_headers['Cc'], $item['email']) === false) {
+            if (!$this->isCopyRecipient($item)) {
                 continue;
             }
 
@@ -395,21 +389,15 @@ class Message extends BaseMessage
      */
     public function getBcc()
     {
+        if ($this->isListUsed()) {
+            return [];
+        }
+
         $addresses = [];
         foreach ($this->_to as $item) {
-            if (is_string($item['address'])) {
-                continue;
-            } else {
-                $item = $item['address'];
-            }
+            $item = $item['address'];
 
-            if (!isset($item['header_to'])) {
-                continue;
-            }
-
-            // fixme: better way to find substring
-            // if email is represented in the Cc header, it's not the Bcc email
-            if (isset($this->_headers['Cc']) && strpos($this->_headers['Cc'], $item['email']) !== false) {
+            if (!$this->isCopyRecipient($item, true)) {
                 continue;
             }
 
@@ -464,6 +452,22 @@ class Message extends BaseMessage
     }
 
     /**
+     * @return string
+     */
+    public function getTemplateId()
+    {
+        return $this->_templateId;
+    }
+
+    /**
+     * @param string $templateId
+     */
+    public function setTemplateId($templateId)
+    {
+        $this->_templateId = $templateId;
+    }
+
+    /**
      * Sets message plain text content.
      * @param string $text message plain text content.
      * @return $this self reference.
@@ -485,6 +489,22 @@ class Message extends BaseMessage
         $this->_html = $html;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRfc822()
+    {
+        return $this->_rfc822;
+    }
+
+    /**
+     * @param string $rfc822
+     */
+    public function setRfc822($rfc822)
+    {
+        $this->_rfc822 = $rfc822;
     }
 
     /**
@@ -609,22 +629,6 @@ class Message extends BaseMessage
         . ' [TO] ' . implode('; ', $this->getTo())
         . ' [CC] ' . implode('; ', $this->getCc())
         . ' [BCC] ' . implode('; ', $this->getBcc());
-    }
-
-    /**
-     * @return string
-     */
-    public function getTemplateId()
-    {
-        return $this->_templateId;
-    }
-
-    /**
-     * @param string $templateId
-     */
-    public function setTemplateId($templateId)
-    {
-        $this->_templateId = $templateId;
     }
 
     /**
@@ -766,22 +770,6 @@ class Message extends BaseMessage
     }
 
     /**
-     * @return string
-     */
-    public function getRfc822()
-    {
-        return $this->_rfc822;
-    }
-
-    /**
-     * @param string $rfc822
-     */
-    public function setRfc822($rfc822)
-    {
-        $this->_rfc822 = $rfc822;
-    }
-
-    /**
      * Prepares the message and gives it's array representation to send it through SparkSpot API
      * @see \SparkPost\Transmission::send()
      * @return array
@@ -823,17 +811,22 @@ class Message extends BaseMessage
      */
     protected function addRecipient($emails, $copy = false)
     {
+        // unset possible used list id, if user is going to set recipients
+        unset($this->_to['list_id']);
+
         if (is_string($emails)) {
             $emails = [$emails];
         }
 
         foreach ($emails as $email => $name) {
             if (is_int($email)) {
-                $address['email'] = $name;
+                $address = [
+                    'email' => trim($name),
+                ];
             } else {
                 $address = [
-                    'name' => $name,
-                    'email' => $email,
+                    'name' => trim($name),
+                    'email' => trim($email),
                 ];
             }
 
@@ -854,9 +847,12 @@ class Message extends BaseMessage
     {
         $addresses = [];
         foreach ($emails as $email => $name) {
+            $name = trim($name);
+
             if (is_int($email)) {
                 $addresses[] = $name;
             } else {
+                $email = trim($email);
                 $addresses[] = "\"{$name}\" <{$email}>";
             }
         }
@@ -879,10 +875,12 @@ class Message extends BaseMessage
             }
         }
 
-        foreach ($this->_to as &$recipient) {
-            if (isset($recipient['address']['header_to'])) {
-                $recipient['address']['header_to'] = str_replace('%mainRecipient', $main,
-                    $recipient['address']['header_to']);
+        if ($main) {
+            foreach ($this->_to as &$recipient) {
+                if (isset($recipient['address']['header_to'])) {
+                    $recipient['address']['header_to'] = str_replace('%mainRecipient', $main,
+                        $recipient['address']['header_to']);
+                }
             }
         }
     }
@@ -897,5 +895,39 @@ class Message extends BaseMessage
         $finfo = new \finfo(FILEINFO_MIME);
 
         return $finfo->buffer($content);
+    }
+
+    private function isListUsed()
+    {
+        return isset($this->_to['list_id']);
+    }
+
+    /**
+     * Checks whether the $recipient is a copy (CC) recipient or BCC recipient, if $checkBcc is true.
+     * CC differs from BCC: CC has email presented in 'Cc' header
+     *
+     * @param array $recipient ['email' => $email]
+     * @param bool $checkBcc do we check whether the recipient is a CC recipient or BCC
+     * @return bool
+     */
+    private function isCopyRecipient($recipient, $checkBcc = false)
+    {
+        if (!isset($recipient['header_to'])) {
+            return false;
+        }
+
+        $result = $checkBcc ? true : false;
+        $ccRecipients = explode(',', ArrayHelper::getValue($this->_headers, 'Cc', []));
+        foreach ($ccRecipients as $ccRecipient) {
+            if (preg_match("/^{$recipient['email']}$|<{$recipient['email']}>$/", $ccRecipient)) {
+                // email is presented in Cc header
+
+                // if we search Bcc, then if email is presented in Cc header - it's not a Bcc email
+                $result = $checkBcc ? false : true;
+                break;
+            }
+        }
+
+        return $result;
     }
 }
