@@ -60,5 +60,162 @@ class MessageTest extends \Codeception\TestCase\Test
         $bcc = 'bccuser@somedomain.com';
         $message->setBcc($bcc);
         $this->assertContains($bcc, array_keys($message->getBcc()), 'Unable to set bcc!');
+
+        $text = 'Text email';
+        $message->setTextBody($text);
+
+        $html = '<a>Html email</a>';
+        $message->setHtmlBody($html);
+
+        $template = 'template-id';
+        $message->setTemplateId($template);
+        $this->assertEquals($template, $message->getTemplateId());
+
+        $campaign = 'campaign-id';
+        $message->setCampaign($campaign);
+        $this->assertEquals($campaign, $message->getCampaign());
+
+        $description = 'description';
+        $message->setDescription($description);
+        $this->assertEquals($description, $message->getDescription());
+
+        $metadata = [
+            'key' => 'value',
+            'key1' => 'value1',
+        ];
+        $message->setMetadata($metadata);
+        $this->assertEquals($metadata, $message->getMetadata());
+    }
+
+    public function testSubstitutionData()
+    {
+        $message = new Message();
+
+        $data = [
+            'key' => 'value',
+            'ke1' => 'value',
+            'keykey' => [
+                '123',
+                '456',
+                '789',
+            ],
+        ];
+        $message->setSubstitutionData($data);
+        $this->assertEquals($data, $message->getSubstitutionData());
+    }
+
+    public function testMultipleToAndCcBcc()
+    {
+        $message = new Message();
+
+        $recipients = [
+            'email1@ex.com',
+            'email2@ex.com' => 'name',
+            'email3@ex.com',
+            'email4@ex.com' => 'name1',
+        ];
+
+        $message->setTo($recipients);
+        $this->assertEquals($recipients, $message->getTo());
+
+        // check if cc, bcc do not affect 'to'
+        $cc = 'email1@ex.com';
+        $message->setCc($cc);
+
+        $bcc = [
+            'bcc@ex.com',
+            'bcc1@ex.com' => 'bcc name',
+        ];
+        $message->setBcc($bcc);
+
+        $this->assertEquals($recipients, $message->getTo());
+
+        $this->assertEquals([$cc], $message->getCc());
+        $this->assertEquals($bcc, $message->getBcc());
+    }
+
+    public function testAttachFile()
+    {
+        $message = new Message();
+
+        $fileName = __FILE__;
+        $message->attach($fileName);
+
+        $attachments = $message->getAttachments();
+        $this->assertCount(1, $attachments);
+        $attachment = $attachments[0];
+        $this->assertEquals($attachment['name'], basename($fileName));
+        $this->assertEquals($attachment['type'], \yii\helpers\FileHelper::getMimeType($fileName));
+        $this->assertEquals($attachment['data'], base64_encode(file_get_contents($fileName)));
+
+        $message->attach($fileName);
+        $attachments = $message->getAttachments();
+        $this->assertCount(2, $attachments);
+    }
+
+    public function testAttachContent()
+    {
+        $message = new Message();
+
+        $fileName = 'test.txt';
+        $fileContent = 'Test attachment content';
+        $message->attachContent($fileContent, ['fileName' => $fileName]);
+
+        $attachments = $message->getAttachments();
+        $this->assertCount(1, $attachments);
+        $attachment = $attachments[0];
+        $this->assertEquals($attachment['name'], $fileName);
+        $this->assertEquals($attachment['data'], base64_encode($fileContent));
+
+        $message->attachContent($fileContent);
+        $attachments = $message->getAttachments();
+        $this->assertCount(2, $attachments);
+        $attachment = $attachments[1];
+        $this->assertEquals($attachment['name'], 'file_1');
+    }
+
+    public function testEmbedFile()
+    {
+        $message = new Message();
+
+        $fileName = __DIR__ . '/../test_image.png';
+
+        $cid = $message->embed($fileName);
+        $this->assertEquals('image_0', $cid);
+
+        $images = $message->getImages();
+        $this->assertCount(1, $images);
+        $image = $images[0];
+        $this->assertEquals($image['name'], 'test_image.png');
+        $this->assertEquals($image['type'], \yii\helpers\FileHelper::getMimeType($fileName));
+        $this->assertEquals($image['data'], base64_encode(file_get_contents($fileName)));
+
+        $cid1 = $message->embed($fileName);
+        $images = $message->getImages();
+        $this->assertEquals('image_1', $cid1);
+        $this->assertCount(2, $images);
+    }
+
+    public function testEmbedContent()
+    {
+        $message = new Message();
+
+        $fileName = __DIR__ . '/../test_image.png';
+
+        $cid = $message->embedContent(file_get_contents($fileName), ['fileName' => 'test_image.png']);
+        $this->assertEquals('image_0', $cid);
+
+        $images = $message->getImages();
+        $this->assertCount(1, $images);
+        $image = $images[0];
+        $this->assertEquals($image['name'], 'test_image.png');
+        $this->assertEquals($image['data'], base64_encode(file_get_contents($fileName)));
+
+        $cid1 = $message->embedContent(file_get_contents($fileName));
+        $images = $message->getImages();
+        $this->assertCount(2, $images);
+        $image = $images[1];
+        $this->assertEquals($image['name'], 'image_1');
+        $this->assertEquals($cid1, 'image_1');
     }
 }

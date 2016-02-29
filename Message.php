@@ -349,7 +349,7 @@ class Message extends BaseMessage
             }
 
             if (isset($item['name'])) {
-                $addresses[$item['name']] = $item['email'];
+                $addresses[$item['email']] = $item['name'];
             } else {
                 $addresses[] = $item['email'];
             }
@@ -402,7 +402,7 @@ class Message extends BaseMessage
             }
 
             if (isset($item['name'])) {
-                $addresses[$item['name']] = $item['email'];
+                $addresses[$item['email']] = $item['name'];
             } else {
                 $addresses[] = $item['email'];
             }
@@ -574,7 +574,7 @@ class Message extends BaseMessage
         }
 
         $mimeType = FileHelper::getMimeType($fileName);
-        if (strpos($mimeType, 'image') === 0) {
+        if (strpos($mimeType, 'image') === false) {
             throw new \InvalidArgumentException("Only images can be embed. Given file {$fileName} is " . $mimeType);
         }
 
@@ -604,11 +604,11 @@ class Message extends BaseMessage
         }
 
         $mimeType = $this->getBinaryMimeType($content);
-        if (strpos($mimeType, 'image') === 0) {
+        if (strpos($mimeType, 'image') === false) {
             throw new \InvalidArgumentException("Only images can be embed. Given content is " . $mimeType);
         }
 
-        $cid = 'image' . count($this->_images);
+        $cid = 'image_' . count($this->_images);
 
         $this->_images[] = [
             'type' => ArrayHelper::getValue($options, 'contentType', $mimeType),
@@ -767,6 +767,22 @@ class Message extends BaseMessage
     public function setUseDraftTemplate($useDraftTemplate)
     {
         $this->_useDraftTemplate = $useDraftTemplate;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttachments()
+    {
+        return $this->_attachments;
+    }
+
+    /**
+     * @return array
+     */
+    public function getImages()
+    {
+        return $this->_images;
     }
 
     /**

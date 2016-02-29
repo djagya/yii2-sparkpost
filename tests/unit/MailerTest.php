@@ -13,7 +13,7 @@ class MailerTest extends \Codeception\TestCase\Test
     {
         new \yii\console\Application(['id' => 'app', 'basePath' => __DIR__]);
     }
-    
+
     public function testApiKeyRequired()
     {
         $this->setExpectedException('\yii\base\InvalidConfigException');
@@ -52,6 +52,7 @@ class MailerTest extends \Codeception\TestCase\Test
         $this->assertEquals($mailer->defaultEmail, $email);
         $message = $mailer->compose();
         $this->assertEquals($message->getReplyTo(), $email);
+        $this->assertEquals($message->getFrom(), $email);
     }
 
     public function testSandboxInheritance()
