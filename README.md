@@ -40,8 +40,87 @@ For testing purposes, while you're waiting for domain verification, you can use 
 Usage
 -----
 
-TBD
+To use this extension, add the following code in your application configuration:
 
+```php 
+return [
+    //....
+    'components' => [
+        'mailer' => [
+            'class' => 'djagya\sparkpost\Mailer',
+            'apiKey' => 'YOUR_API_KEY',
+            'defaultEmail' => 'sender@example.com', // optional if 'adminEmail' app param is specified or 'useDefaultEmail' is false
+        ],
+    ],
+];
+```
+
+If you want to disable default "from" and "reply to" email address for messages you can set `useDefaultEmail` to `false` in Mailer config, but then you must specify "from" email address for every message you send.
+
+### Send an email
+
+You can then send an email as follows:
+
+```php 
+Yii::$app->mailer->compose('contact/html')
+    ->setFrom('from@domain.com')
+    ->setTo($to)
+    ->setSubject($from)
+    ->send();
+```
+
+### Sandbox mode
+
+To test email sending while your domain is not verified by Sparkpost you can use sandbox mode by setting `sandbox` option to true or use `setSandbox` directly for message.  
+Besides that you must set "from" email address to sandbox Sparkpost domain. 
+
+```php 
+return [
+    //....
+    'components' => [
+        'mailer' => [
+            'class' => 'djagya\sparkpost\Mailer',
+            'apiKey' => 'YOUR_API_KEY',
+            'sandbox' => true,
+            'defaultEmail' => 'test@SPARKPOST_SANDBOX_DOMAIN',
+        ],
+    ],
+];
+```
+
+OR
+
+```php 
+Yii::$app->mailer->compose('contact/html')
+    ->setSandbox(true)
+    ->setFrom('test@SPARKPOST_SANDBOX_DOMAIN')
+    ->setTo($to)
+    ->setSubject($subject)
+    ->send();
+```
+
+### Templates
+
+Sparkpost templates are supported.  
+When you use a template, template's "from" and "subject" params will be used and override specified by you values.
+
+To set message template and it's substitution data (template context) you should either give an array with specified `template` key and template data as a second param:
+
+```php 
+Yii::$app->mailer->compose(['template' => 'sparkpost_template_id'], ['template_param' => 'value1', ...])
+    ->setTo($to)
+    ->send();
+```
+
+OR use `setTemplateId()` and `setSubstitutionData()` Message methods:
+
+```php
+Yii::$app->mailer->compose()
+    ->setTemplateId('sparkpost_template_id')
+    ->setSubstitutionData(['template_param' => 'value1', ...])
+    ->setTo($to)
+    ->send();
+```
 
 Unit Testing
 ------------
