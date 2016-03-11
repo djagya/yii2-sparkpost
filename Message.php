@@ -963,7 +963,7 @@ class Message extends BaseMessage
         }
 
         $result = $checkBcc ? true : false;
-        $ccRecipients = explode(',', ArrayHelper::getValue($this->_headers, 'Cc', []));
+        $ccRecipients = explode(',', ArrayHelper::getValue($this->_headers, 'Cc', ''));
         foreach ($ccRecipients as $ccRecipient) {
             if (preg_match("/^{$recipient['email']}$|<{$recipient['email']}>$/", $ccRecipient)) {
                 // email is presented in Cc header
