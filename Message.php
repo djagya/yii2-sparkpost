@@ -45,15 +45,14 @@ class Message extends BaseMessage
         'recipients' => 'sparkpostRecipients',
         'recipientList' => 'to.list_id',
         'template' => 'templateId',
+        'useDraftTemplate',
         'trackOpens' => 'options.open_tracking',
         'trackClicks' => 'options.click_tracking',
-        'useDraftTemplate',
-
-        // TODO wait for sparkpost lib add these values to the mapping
-//        'start_time',
-//        'sandbox',
-//        'attachments',
-//        'inline_images' => 'images',
+        'transactional' => 'options.transactional',
+        'sandbox' => 'options.sandbox',
+        'startTime' => 'options.start_time',
+        'inline_images' => 'images',
+        'attachments',
     ];
 
     /**
