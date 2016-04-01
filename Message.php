@@ -871,7 +871,9 @@ class Message extends BaseMessage
 
             $this->_sparkpostRecipients[] = ['address' => $address];
         }
-        $this->_headers['Cc'] = $this->emailsToString($this->_cc);
+        if ($this->_cc) {
+            $this->_headers['Cc'] = $this->emailsToString($this->_cc);
+        }
 
         // Bcc
         foreach ($this->_bcc as $email => $name) {
