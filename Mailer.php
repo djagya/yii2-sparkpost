@@ -159,6 +159,12 @@ class Mailer extends BaseMailer
      */
     protected function sendMessage($message)
     {
+        if (!$message->getTo()) {
+            \Yii::warning('Message was not sent, because "to" recipients list is empty', self::LOG_CATEGORY);
+
+            return false;
+        }
+
         try {
             $result = $this->_sparkPost->transmission->send($message->toSparkPostArray());
 

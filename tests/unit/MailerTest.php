@@ -76,7 +76,7 @@ class MailerTest extends \Codeception\TestCase\Test
 
         $mailer->getSparkPost()->transmission = $transmissionSuccess;
 
-        $this->assertTrue($mailer->compose()->send());
+        $this->assertTrue($mailer->compose()->setTo('mail@example.com')->send());
     }
 
     public function testRejectedSend()
@@ -91,7 +91,7 @@ class MailerTest extends \Codeception\TestCase\Test
 
         $mailer->getSparkPost()->transmission = $transmissionSuccess;
 
-        $this->assertTrue($mailer->compose()->send());
+        $this->assertTrue($mailer->compose()->setTo('mail@example.com')->send());
     }
 
     public function testAllRejectedSend()
@@ -106,7 +106,7 @@ class MailerTest extends \Codeception\TestCase\Test
 
         $mailer->getSparkPost()->transmission = $transmissionSuccess;
 
-        $this->assertFalse($mailer->compose()->send());
+        $this->assertFalse($mailer->compose()->setTo('mail@example.com')->send());
     }
 
     public function testRealSend()
@@ -123,6 +123,23 @@ class MailerTest extends \Codeception\TestCase\Test
                 ->setSubject('test')
                 ->setFrom('test@sparkpostbox.com')
                 ->setTo('test@example.com')
+                ->send()
+        );
+    }
+
+    /**
+     * We shouldn't get any exceptions here
+     */
+    public function testEmptySend()
+    {
+        $mailer = new Mailer(['apiKey' => 'key', 'useDefaultEmail' => false, 'sandbox' => true]);
+
+        $this->assertFalse(
+            $mailer->compose()
+                ->setTextBody('test message')
+                ->setSubject('test')
+                ->setFrom('test@sparkpostbox.com')
+                ->setTo([])
                 ->send()
         );
     }
