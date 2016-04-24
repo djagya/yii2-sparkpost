@@ -16,19 +16,19 @@ class MailerTest extends \Codeception\TestCase\Test
 
     public function testApiKeyRequired()
     {
-        $this->setExpectedException('\yii\base\InvalidConfigException');
+        $this->expectException('\yii\base\InvalidConfigException');
         new Mailer(['useDefaultEmail' => false]);
     }
 
     public function testApiKeyIsString()
     {
-        $this->setExpectedException('\yii\base\InvalidConfigException');
+        $this->expectException('\yii\base\InvalidConfigException');
         new Mailer(['apiKey' => [], 'useDefaultEmail' => false]);
     }
 
     public function testDefaultEmailAdminEmailRequired()
     {
-        $this->setExpectedException('\yii\base\InvalidConfigException');
+        $this->expectException('\yii\base\InvalidConfigException');
         new Mailer(['apiKey' => 'key']);
     }
 
@@ -142,5 +142,30 @@ class MailerTest extends \Codeception\TestCase\Test
                 ->setTo([])
                 ->send()
         );
+    }
+
+    public function testDevelopmentMode()
+    {
+        $transmission = \Codeception\Util\Stub::make('\SparkPost\Transmission', [
+            'send' => function ($messageArray) {
+                throw new \SparkPost\APIResponseException();
+            }
+        ]);
+
+        // development mode off
+        $mailer = new Mailer([
+            'apiKey' => 'key',
+            'useDefaultEmail' => false,
+            'sandbox' => true,
+            'developmentMode' => false
+        ]);
+        $mailer->getSparkPost()->transmission = $transmission;
+
+        $this->assertFalse($mailer->compose()->setTo('mail@example.com')->send());
+
+        // development mode on - we should get an exception
+        $mailer->developmentMode = true;
+        $this->expectException(\SparkPost\APIResponseException::class);
+        $mailer->compose()->setTo('mail@example.com')->send();
     }
 }

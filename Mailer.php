@@ -61,6 +61,13 @@ class Mailer extends BaseMailer
     public $defaultEmail;
 
     /**
+     * If the development mode is enabled, Mailer will throw an exception if something goes wrong.
+     * If the development mode is disabled, Mailer will fail gracefully.
+     * @var bool
+     */
+    public $developmentMode = true;
+
+    /**
      * @inheritdoc
      */
     public $messageClass = 'djagya\sparkpost\Message';
@@ -184,8 +191,14 @@ class Mailer extends BaseMailer
 
             return true;
         } catch (APIResponseException $e) {
-            \Yii::error($e->getMessage(), self::LOG_CATEGORY);
-            throw new \Exception('An error occurred in mailer, check your application logs.', 500, $e);
+            \Yii::error("An error occurred in mailer: {$e->getMessage()}, code: {$e->getAPICode()}, api message: \"{$e->getAPIMessage()}\", api description: \"{$e->getAPIDescription()}\"",
+                self::LOG_CATEGORY);
+
+            if ($this->developmentMode) {
+                throw $e;
+            } else {
+                return false;
+            }
         }
     }
 
