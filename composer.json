@@ -17,7 +17,7 @@
     "guzzlehttp/guzzle": "~6.0"
   },
   "require-dev": {
-    "codeception/codeception": "*",
+    "codeception/codeception": "2.1.*",
     "yiisoft/yii2-apidoc": "~2.0.0"
   },
   "autoload": {
