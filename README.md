@@ -49,6 +49,7 @@ return [
         'mailer' => [
             'class' => 'djagya\sparkpost\Mailer',
             'apiKey' => 'YOUR_API_KEY',
+            'viewPath' => '@common/mail',
             'defaultEmail' => 'sender@example.com', // optional if 'adminEmail' app param is specified or 'useDefaultEmail' is false
         ],
     ],
