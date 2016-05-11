@@ -4,11 +4,12 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/1316961e/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/69e4ecf0/style.css" rel="stylesheet">
-<script src="./assets/c93b6377/jquery.js"></script>
-<script src="./assets/1316961e/js/bootstrap.js"></script>
-<script src="./assets/f8088c5c/jssearch.js"></script>    <title>Mailer, djagya\sparkpost\Mailer - Yii Framework 2.0 API Documentation</title>
+        <link href="./assets/83a98b8f/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/aeb36a3f/solarized_light.css" rel="stylesheet">
+<link href="./assets/1443bccd/style.css" rel="stylesheet">
+<script src="./assets/59847ee6/jquery.js"></script>
+<script src="./assets/83a98b8f/js/bootstrap.js"></script>
+<script src="./assets/68b791cd/jssearch.js"></script>    <title>Mailer, djagya\sparkpost\Mailer - Yii Framework 2.0 API Documentation</title>
 </head>
 <body>
 
@@ -34,7 +35,7 @@
 <a class="list-group-item" href="./djagya-sparkpost-message.html">Message</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Class djagya\sparkpost\Mailer</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
             | <a href="#properties">Properties</a>
                 | <a href="#methods">Methods</a>
@@ -50,7 +51,7 @@
 yii\mail\BaseMailer</td></tr>
                                         </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>Mailer consumes Message object and sends it through Sparkpost API.</strong></p>
     
     <p>See also <a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a>.</p></div>
@@ -82,6 +83,18 @@ yii\mail\BaseMailer</td></tr>
         <td><a href="djagya-sparkpost-mailer.html#$defaultEmail-detail">$defaultEmail</a></td>
         <td><a href="http://www.php.net/language.types.string">string</a></td>
         <td>Default email</td>
+        <td><a href="djagya-sparkpost-mailer.html">djagya\sparkpost\Mailer</a></td>
+    </tr>
+            <tr id="$developmentMode">
+        <td><a href="djagya-sparkpost-mailer.html#$developmentMode-detail">$developmentMode</a></td>
+        <td>bool</td>
+        <td></td>
+        <td><a href="djagya-sparkpost-mailer.html">djagya\sparkpost\Mailer</a></td>
+    </tr>
+            <tr id="$httpAdapter">
+        <td><a href="djagya-sparkpost-mailer.html#$httpAdapter-detail">$httpAdapter</a></td>
+        <td><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.callable">callable</a>|<a href="http://www.php.net/language.types.string">string</a></td>
+        <td></td>
         <td><a href="djagya-sparkpost-mailer.html">djagya\sparkpost\Mailer</a></td>
     </tr>
             <tr id="$messageClass">
@@ -129,7 +142,7 @@ yii\mail\BaseMailer</td></tr>
 </tr>
         <tr id="compose()">
         <td><a href="djagya-sparkpost-mailer.html#compose()-detail">compose()</a></td>
-        <td></td>
+        <td>Creates a new message instance and optionally composes its body content via view rendering.</td>
         <td><a href="djagya-sparkpost-mailer.html">djagya\sparkpost\Mailer</a></td>
     </tr>
             <tr id="getSparkPost()">
@@ -203,90 +216,134 @@ yii\mail\BaseMailer</td></tr>
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
         <a class="tool-link hash" href="djagya-sparkpost-mailer.html#$apiKey-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        $apiKey        <span class="detailHeaderTag small">
-            public                                    property
+        $apiKey        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.string">string</a> <a href="djagya-sparkpost-mailer.html#$apiKey-detail">$apiKey</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+    <div class="doc-description">
+        <p>SparkPost API Key, required.</p>
 
-    <p>SparkPost API Key, required.</p>
+            </div>
 
-    
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <a href="djagya-sparkpost-mailer.html#$apiKey-detail">$apiKey</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 
     <div class="detail-header h3" id="$defaultEmail-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
         <a class="tool-link hash" href="djagya-sparkpost-mailer.html#$defaultEmail-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        $defaultEmail        <span class="detailHeaderTag small">
-            public                                    property
+        $defaultEmail        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.string">string</a> <a href="djagya-sparkpost-mailer.html#$defaultEmail-detail">$defaultEmail</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+    <div class="doc-description">
+        <p>Default email</p>
 
-    <p>Default email</p>
+            </div>
 
-    
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <a href="djagya-sparkpost-mailer.html#$defaultEmail-detail">$defaultEmail</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
+
+    <div class="detail-header h3" id="$developmentMode-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="djagya-sparkpost-mailer.html#$developmentMode-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        $developmentMode        <span class="detail-header-tag small">
+            public                                                property
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type">bool</span> <a href="djagya-sparkpost-mailer.html#$developmentMode-detail">$developmentMode</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span></div>
+
+
+    <div class="detail-header h3" id="$httpAdapter-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="djagya-sparkpost-mailer.html#$httpAdapter-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        $httpAdapter        <span class="detail-header-tag small">
+            public                                                property
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        
+            </div>
+
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.callable">callable</a>|<a href="http://www.php.net/language.types.string">string</a></span> <a href="djagya-sparkpost-mailer.html#$httpAdapter-detail">$httpAdapter</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span></div>
+
 
     <div class="detail-header h3" id="$messageClass-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
         <a class="tool-link hash" href="djagya-sparkpost-mailer.html#$messageClass-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        $messageClass        <span class="detailHeaderTag small">
-            public                                    property
+        $messageClass        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"> <a href="djagya-sparkpost-mailer.html#$messageClass-detail">$messageClass</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'djagya\sparkpost\Message'</span></div>
+    <div class="doc-description">
+        
+            </div>
 
-    
-    
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"></span> <a href="djagya-sparkpost-mailer.html#$messageClass-detail">$messageClass</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'djagya\sparkpost\Message'</span></div>
+
 
     <div class="detail-header h3" id="$sandbox-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
         <a class="tool-link hash" href="djagya-sparkpost-mailer.html#$sandbox-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        $sandbox        <span class="detailHeaderTag small">
-            public                                    property
+        $sandbox        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature">bool <a href="djagya-sparkpost-mailer.html#$sandbox-detail">$sandbox</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span></div>
+    <div class="doc-description">
+        <p>Sandbox mode</p>
 
-    <p>Sandbox mode</p>
+            </div>
 
-    
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type">bool</span> <a href="djagya-sparkpost-mailer.html#$sandbox-detail">$sandbox</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span></div>
+
 
     <div class="detail-header h3" id="$sparkpostConfig-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
         <a class="tool-link hash" href="djagya-sparkpost-mailer.html#$sparkpostConfig-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        $sparkpostConfig        <span class="detailHeaderTag small">
-            public                                    property
+        $sparkpostConfig        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature"><a href="http://www.php.net/language.types.array">array</a> <a href="djagya-sparkpost-mailer.html#$sparkpostConfig-detail">$sparkpostConfig</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;[]</span></div>
+    <div class="doc-description">
+        <p>Sparkpost config</p>
 
-    <p>Sparkpost config</p>
+        <p>See also <span class="broken-link">\SparkPost\SparkPost::$apiDefaults</span>.</p>    </div>
 
-    <p>See also <span class="broken-link">\SparkPost\SparkPost::$apiDefaults</span>.</p>
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <a href="djagya-sparkpost-mailer.html#$sparkpostConfig-detail">$sparkpostConfig</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;[]</span></div>
+
 
     <div class="detail-header h3" id="$useDefaultEmail-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
         <a class="tool-link hash" href="djagya-sparkpost-mailer.html#$useDefaultEmail-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        $useDefaultEmail        <span class="detailHeaderTag small">
-            public                                    property
+        $useDefaultEmail        <span class="detail-header-tag small">
+            public                                                property
                     </span>
     </div>
 
-    <div class="signature">bool <a href="djagya-sparkpost-mailer.html#$useDefaultEmail-detail">$useDefaultEmail</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span></div>
+    <div class="doc-description">
+        <p>Default email usage</p>
 
-    <p>Default email usage</p>
+            </div>
 
-    
+    <div class="signature"><span class="signature-defs">public</span> <span class="signature-type">bool</span> <a href="djagya-sparkpost-mailer.html#$useDefaultEmail-detail">$useDefaultEmail</a> <span style="color: #0000BB"></span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span></div>
+
 </div>
 <h2>Method Details</h2>
 
@@ -298,29 +355,51 @@ yii\mail\BaseMailer</td></tr>
         
         compose()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
     <div class="doc-description">
-        <p><strong></strong></p>
+        <p><strong>Creates a new message instance and optionally composes its body content via view rendering.</strong></p>
 
         
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-mailer.html#compose()-detail">compose</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$view&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;array&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></span> <strong><a href="djagya-sparkpost-mailer.html#compose()-detail">compose</a></strong> ( <span style="color: #0000BB">$view&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span>, <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$view</span></td>
-                  <td class="param-type-col"></td>
-                  <td class="param-desc-col"></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The view to be used for rendering the message body. This can be:</p>
+<ul>
+<li>a string, which represents the view name or path alias for rendering the HTML body of the email.
+In this case, the text body will be generated by applying <code>strip_tags()</code> to the HTML body.</li>
+<li>an array with ('html' and/or 'text' elements) OR 'template' element. The 'html' element refers to the view name or path alias
+for rendering the HTML body, while 'text' element is for rendering the text body. For example,
+<code>['html' =&gt; 'contact-html', 'text' =&gt; 'contact-text']</code>.
+If 'template' key is set, then stored template will be used for email.</li>
+<li>null, meaning the message instance will be returned without body content.</li>
+</ul>
+<p>The view to be rendered can be specified in one of the following formats:</p>
+<ul>
+<li>path alias (e.g. "@app/mail/contact");</li>
+<li>a relative view name (e.g. "contact") located under <span class="broken-link">\djagya\sparkpost\viewPath</span>.</li>
+</ul>
+</td>
                 </tr>
                             <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
-                  <td class="param-type-col"></td>
-                  <td class="param-desc-col"></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
+                  <td class="param-desc-col"><p>The parameters (name-value pairs) that will be extracted and made available in the view file or template.</p>
+</td>
                 </tr>
-                                                </table>
+                                        <tr>
+                  <th class="param-name-col">return</th>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
+                  <td class="param-desc-col"><p>Message instance.</p>
+</td>
+                </tr>
+                                    </table>
 
 <!--	-->
 
@@ -330,7 +409,7 @@ yii\mail\BaseMailer</td></tr>
         
         getSparkPost()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -341,7 +420,7 @@ yii\mail\BaseMailer</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">\SparkPost\SparkPost <strong><a href="djagya-sparkpost-mailer.html#getSparkPost()-detail">getSparkPost</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">\SparkPost\SparkPost</span> <strong><a href="djagya-sparkpost-mailer.html#getSparkPost()-detail">getSparkPost</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -352,7 +431,7 @@ yii\mail\BaseMailer</td></tr>
         
         init()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -363,7 +442,7 @@ yii\mail\BaseMailer</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-mailer.html#init()-detail">init</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type">void</span> <strong><a href="djagya-sparkpost-mailer.html#init()-detail">init</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -374,7 +453,7 @@ yii\mail\BaseMailer</td></tr>
         
         sendMessage()
         <span class="detail-header-tag small">
-            protected            method
+            protected                                    method
                     </span>
     </div>
 
@@ -385,7 +464,7 @@ yii\mail\BaseMailer</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">bool <strong><a href="djagya-sparkpost-mailer.html#sendMessage()-detail">sendMessage</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">protected</span> <span class="signature-type">bool</span> <strong><a href="djagya-sparkpost-mailer.html#sendMessage()-detail">sendMessage</a></strong> ( <span style="color: #0000BB">$message</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$message</span></td>
                   <td class="param-type-col"><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
@@ -438,12 +517,12 @@ yii\mail\BaseMailer</td></tr>
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sun, 28 Feb 2016 14:39:24 +0000</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 11 May 2016 14:41:58 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {
     var shiftWindow = function () { scrollBy(0, -50) };
-    if (location.hash) shiftWindow();
+    if (location.hash) setTimeout(shiftWindow, 1);
     window.addEventListener("hashchange", shiftWindow);
 var element = document.createElement("script");
 element.src = "./jssearch.index.js";

@@ -7,6 +7,10 @@ body {
     max-width: 1250px;
 }
 
+.guide-content img, .api-content img {
+    max-width: 100%;
+}
+
 .wrap {
     min-height: 100%;
     height: auto;
@@ -54,9 +58,48 @@ body {
     word-break: break-all;
 }
 
+pre {
+    background: #efefef;
+}
+
+pre code.hljs {
+    background: transparent;
+    color: #28353d;
+}
+/* adjust comment color of hljs, because comments are important! */
+.hljs-comment {
+  color: #ff6900;
+  font-style: normal;
+}
+
 blockquote {
     font-size: 14px;
 }
+
+blockquote.warning { /* copy of bootstrap .alert-danger */
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+
+blockquote.note { /* copy of bootstrap .alert-warning */
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
+}
+
+blockquote.info { /* copy of bootstrap .alert-info */
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+}
+
+blockquote.tip { /* copy of bootstrap .alert-success */
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+
 
 td p {
     margin: 0;
@@ -89,6 +132,14 @@ table.summary-table .col-defined  { width: 15%; }
 
 .doc-description p:last-child {
     margin-bottom: 0;
+}
+
+.signature-defs {
+    color: #936;
+}
+
+.signature-type, .signature-type a {
+    color: #693;
 }
 
 .tool-link {

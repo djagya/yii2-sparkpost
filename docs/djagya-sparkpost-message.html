@@ -4,11 +4,12 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-        <link href="./assets/1316961e/css/bootstrap.css" rel="stylesheet">
-<link href="./assets/69e4ecf0/style.css" rel="stylesheet">
-<script src="./assets/c93b6377/jquery.js"></script>
-<script src="./assets/1316961e/js/bootstrap.js"></script>
-<script src="./assets/f8088c5c/jssearch.js"></script>    <title>Message, djagya\sparkpost\Message - Yii Framework 2.0 API Documentation</title>
+        <link href="./assets/83a98b8f/css/bootstrap.css" rel="stylesheet">
+<link href="./assets/aeb36a3f/solarized_light.css" rel="stylesheet">
+<link href="./assets/1443bccd/style.css" rel="stylesheet">
+<script src="./assets/59847ee6/jquery.js"></script>
+<script src="./assets/83a98b8f/js/bootstrap.js"></script>
+<script src="./assets/68b791cd/jssearch.js"></script>    <title>Message, djagya\sparkpost\Message - Yii Framework 2.0 API Documentation</title>
 </head>
 <body>
 
@@ -34,7 +35,7 @@
 <a class="list-group-item active" href="./djagya-sparkpost-message.html">Message</a></div></div>    </div>
     <div class="col-md-9 api-content" role="main">
         <h1>Class djagya\sparkpost\Message</h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
                 | <a href="#methods">Methods</a>
             </div>
@@ -48,7 +49,7 @@
 yii\mail\BaseMessage</td></tr>
                                         </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong>Message is a representation of a message that will be consumed by Mailer.</strong></p>
     <p>Templates are supported and, if used, will override specified content data with template's ones.</p>
 
@@ -72,7 +73,7 @@ yii\mail\BaseMessage</td></tr>
 <tr>
   <th>Method</th><th>Description</th><th>Defined By</th>
 </tr>
-            <tr id="attach()">
+        <tr id="attach()">
         <td><a href="djagya-sparkpost-message.html#attach()-detail">attach()</a></td>
         <td>Attaches existing file to the email message.</td>
         <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
@@ -90,6 +91,11 @@ yii\mail\BaseMessage</td></tr>
             <tr id="embedContent()">
         <td><a href="djagya-sparkpost-message.html#embedContent()-detail">embedContent()</a></td>
         <td>Attach a content as file and return it's CID source.</td>
+        <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
+    </tr>
+            <tr id="getAttachments()">
+        <td><a href="djagya-sparkpost-message.html#getAttachments()-detail">getAttachments()</a></td>
+        <td></td>
         <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
     </tr>
             <tr id="getBcc()">
@@ -120,6 +126,11 @@ yii\mail\BaseMessage</td></tr>
             <tr id="getFrom()">
         <td><a href="djagya-sparkpost-message.html#getFrom()-detail">getFrom()</a></td>
         <td>Returns the message sender.</td>
+        <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
+    </tr>
+            <tr id="getImages()">
+        <td><a href="djagya-sparkpost-message.html#getImages()-detail">getImages()</a></td>
+        <td></td>
         <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
     </tr>
             <tr id="getMetadata()">
@@ -224,6 +235,11 @@ yii\mail\BaseMessage</td></tr>
  'start_time' =&gt; string, // Format YYYY-MM-DDTHH:MM:SS+-HH:MM or "now". Example: '2015-02-11T08:00:00-04:00'.</td>
         <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
     </tr>
+            <tr id="setRecipientsListId()">
+        <td><a href="djagya-sparkpost-message.html#setRecipientsListId()-detail">setRecipientsListId()</a></td>
+        <td>Set stored recipients list id to use instead usual $to.</td>
+        <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
+    </tr>
             <tr id="setReplyTo()">
         <td><a href="djagya-sparkpost-message.html#setReplyTo()-detail">setReplyTo()</a></td>
         <td>Sets the reply-to address of this message.</td>
@@ -242,11 +258,6 @@ yii\mail\BaseMessage</td></tr>
             <tr id="setSandbox()">
         <td><a href="djagya-sparkpost-message.html#setSandbox()-detail">setSandbox()</a></td>
         <td></td>
-        <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
-    </tr>
-            <tr id="setStoredRecipientsList()">
-        <td><a href="djagya-sparkpost-message.html#setStoredRecipientsList()-detail">setStoredRecipientsList()</a></td>
-        <td>Set stored recipients list id to use instead usual $to.</td>
         <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
     </tr>
             <tr id="setSubject()">
@@ -292,28 +303,6 @@ yii\mail\BaseMessage</td></tr>
     </table>
 </div>
 
-<div class="summary doc-method">
-<h2>Protected Methods</h2>
-
-<p><a href="#" class="toggle">Hide inherited methods</a></p>
-
-<table class="summary-table table table-striped table-bordered table-hover">
-<colgroup>
-    <col class="col-method" />
-    <col class="col-description" />
-    <col class="col-defined" />
-</colgroup>
-<tr>
-  <th>Method</th><th>Description</th><th>Defined By</th>
-</tr>
-        <tr id="addRecipient()">
-        <td><a href="djagya-sparkpost-message.html#addRecipient()-detail">addRecipient()</a></td>
-        <td>Processes given emails and fill recipients field</td>
-        <td><a href="djagya-sparkpost-message.html">djagya\sparkpost\Message</a></td>
-    </tr>
-                                                                                                                                                                                </table>
-</div>
-
 <a id="events"></a>
 
 <a id="constants"></a>
@@ -322,46 +311,13 @@ yii\mail\BaseMessage</td></tr>
 
 <div class="method-doc">
 
-    <div class="detail-header h3" id="addRecipient()-detail">
-        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-        <a class="tool-link hash" href="djagya-sparkpost-message.html#addRecipient()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
-        
-        addRecipient()
-        <span class="detail-header-tag small">
-            protected            method
-                    </span>
-    </div>
-
-    <div class="doc-description">
-        <p><strong>Processes given emails and fill recipients field</strong></p>
-
-        
-            </div>
-
-    <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#addRecipient()-detail">addRecipient</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$emails</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$copy&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">)</span></td></tr>
-                                    <tr>
-                  <td class="param-name-col"><span style="color: #0000BB">$emails</span></td>
-                  <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a>|<a href="http://www.php.net/language.types.string">string</a></td>
-                  <td class="param-desc-col"></td>
-                </tr>
-                            <tr>
-                  <td class="param-name-col"><span style="color: #0000BB">$copy</span></td>
-                  <td class="param-type-col">bool</td>
-                  <td class="param-desc-col"><p>Adds header_to field with a placeholder to make the recipient(s) a CC/BCC copy</p>
-</td>
-                </tr>
-                                                </table>
-
-<!--	-->
-
     <div class="detail-header h3" id="attach()-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
         <a class="tool-link hash" href="djagya-sparkpost-message.html#attach()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
         attach()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -372,7 +328,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#attach()-detail">attach</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$fileName</span><span style="color: #007700">,&nbsp;array&nbsp;</span><span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#attach()-detail">attach</a></strong> ( <span style="color: #0000BB">$fileName</span>, <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$fileName</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -391,7 +347,7 @@ yii\mail\BaseMessage</td></tr>
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -405,7 +361,7 @@ yii\mail\BaseMessage</td></tr>
         
         attachContent()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -416,7 +372,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#attachContent()-detail">attachContent</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$content</span><span style="color: #007700">,&nbsp;array&nbsp;</span><span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#attachContent()-detail">attachContent</a></strong> ( <span style="color: #0000BB">$content</span>, <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$content</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -435,7 +391,7 @@ yii\mail\BaseMessage</td></tr>
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -449,7 +405,7 @@ yii\mail\BaseMessage</td></tr>
         
         embed()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -461,7 +417,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#embed()-detail">embed</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$fileName</span><span style="color: #007700">,&nbsp;array&nbsp;</span><span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#embed()-detail">embed</a></strong> ( <span style="color: #0000BB">$fileName</span>, <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$fileName</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -494,7 +450,7 @@ yii\mail\BaseMessage</td></tr>
         
         embedContent()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -506,7 +462,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#embedContent()-detail">embedContent</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$content</span><span style="color: #007700">,&nbsp;array&nbsp;</span><span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">=&nbsp;[]&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#embedContent()-detail">embedContent</a></strong> ( <span style="color: #0000BB">$content</span>, <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">=&nbsp;[]</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$content</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -533,13 +489,35 @@ yii\mail\BaseMessage</td></tr>
 
 <!--	-->
 
+    <div class="detail-header h3" id="getAttachments()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="djagya-sparkpost-message.html#getAttachments()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getAttachments()
+        <span class="detail-header-tag small">
+            public                                    method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong></strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="djagya-sparkpost-message.html#getAttachments()-detail">getAttachments</a></strong> ( )</td></tr>
+            </table>
+
+<!--	-->
+
     <div class="detail-header h3" id="getBcc()-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
         <a class="tool-link hash" href="djagya-sparkpost-message.html#getBcc()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
         getBcc()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -550,7 +528,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="djagya-sparkpost-message.html#getBcc()-detail">getBcc</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="djagya-sparkpost-message.html#getBcc()-detail">getBcc</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -567,7 +545,7 @@ yii\mail\BaseMessage</td></tr>
         
         getCampaign()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -578,7 +556,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#getCampaign()-detail">getCampaign</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#getCampaign()-detail">getCampaign</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -595,7 +573,7 @@ yii\mail\BaseMessage</td></tr>
         
         getCc()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -606,7 +584,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="djagya-sparkpost-message.html#getCc()-detail">getCc</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="djagya-sparkpost-message.html#getCc()-detail">getCc</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -623,7 +601,7 @@ yii\mail\BaseMessage</td></tr>
         
         getCharset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -634,7 +612,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#getCharset()-detail">getCharset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#getCharset()-detail">getCharset</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -651,7 +629,7 @@ yii\mail\BaseMessage</td></tr>
         
         getDescription()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -662,7 +640,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#getDescription()-detail">getDescription</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#getDescription()-detail">getDescription</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -673,7 +651,7 @@ yii\mail\BaseMessage</td></tr>
         
         getFrom()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -684,7 +662,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#getFrom()-detail">getFrom</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#getFrom()-detail">getFrom</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -695,13 +673,13 @@ yii\mail\BaseMessage</td></tr>
 
 <!--	-->
 
-    <div class="detail-header h3" id="getMetadata()-detail">
+    <div class="detail-header h3" id="getImages()-detail">
         <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-        <a class="tool-link hash" href="djagya-sparkpost-message.html#getMetadata()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        <a class="tool-link hash" href="djagya-sparkpost-message.html#getImages()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
         
-        getMetadata()
+        getImages()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -712,7 +690,29 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="djagya-sparkpost-message.html#getMetadata()-detail">getMetadata</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="djagya-sparkpost-message.html#getImages()-detail">getImages</a></strong> ( )</td></tr>
+            </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="getMetadata()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="djagya-sparkpost-message.html#getMetadata()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        getMetadata()
+        <span class="detail-header-tag small">
+            public                                    method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong></strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="djagya-sparkpost-message.html#getMetadata()-detail">getMetadata</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -723,7 +723,7 @@ yii\mail\BaseMessage</td></tr>
         
         getOptions()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -734,7 +734,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="djagya-sparkpost-message.html#getOptions()-detail">getOptions</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="djagya-sparkpost-message.html#getOptions()-detail">getOptions</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -745,7 +745,7 @@ yii\mail\BaseMessage</td></tr>
         
         getReplyTo()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -756,7 +756,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#getReplyTo()-detail">getReplyTo</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#getReplyTo()-detail">getReplyTo</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -773,7 +773,7 @@ yii\mail\BaseMessage</td></tr>
         
         getReturnPath()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -784,7 +784,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#getReturnPath()-detail">getReturnPath</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#getReturnPath()-detail">getReturnPath</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -795,7 +795,7 @@ yii\mail\BaseMessage</td></tr>
         
         getRfc822()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -806,7 +806,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#getRfc822()-detail">getRfc822</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#getRfc822()-detail">getRfc822</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -817,7 +817,7 @@ yii\mail\BaseMessage</td></tr>
         
         getSandbox()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -828,7 +828,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="djagya-sparkpost-message.html#getSandbox()-detail">getSandbox</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="djagya-sparkpost-message.html#getSandbox()-detail">getSandbox</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -839,7 +839,7 @@ yii\mail\BaseMessage</td></tr>
         
         getSubject()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -850,7 +850,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#getSubject()-detail">getSubject</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#getSubject()-detail">getSubject</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -867,7 +867,7 @@ yii\mail\BaseMessage</td></tr>
         
         getSubstitutionData()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -878,7 +878,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="djagya-sparkpost-message.html#getSubstitutionData()-detail">getSubstitutionData</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="djagya-sparkpost-message.html#getSubstitutionData()-detail">getSubstitutionData</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -889,7 +889,7 @@ yii\mail\BaseMessage</td></tr>
         
         getTemplateId()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -900,7 +900,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#getTemplateId()-detail">getTemplateId</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#getTemplateId()-detail">getTemplateId</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -911,7 +911,7 @@ yii\mail\BaseMessage</td></tr>
         
         getTo()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -922,7 +922,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="djagya-sparkpost-message.html#getTo()-detail">getTo</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="djagya-sparkpost-message.html#getTo()-detail">getTo</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -939,7 +939,7 @@ yii\mail\BaseMessage</td></tr>
         
         isUseDraftTemplate()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -950,7 +950,7 @@ yii\mail\BaseMessage</td></tr>
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.boolean">boolean</a> <strong><a href="djagya-sparkpost-message.html#isUseDraftTemplate()-detail">isUseDraftTemplate</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="djagya-sparkpost-message.html#isUseDraftTemplate()-detail">isUseDraftTemplate</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -961,7 +961,7 @@ yii\mail\BaseMessage</td></tr>
         
         setBcc()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -974,7 +974,7 @@ SparkPost distinguish CC and BCC recipients by having the same email in 'Cc' hea
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setBcc()-detail">setBcc</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$bcc&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setBcc()-detail">setBcc</a></strong> ( <span style="color: #0000BB">$bcc</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$bcc</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -986,7 +986,7 @@ You may also specify receiver name in addition to email address using format:
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -1000,7 +1000,7 @@ You may also specify receiver name in addition to email address using format:
         
         setCampaign()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1011,7 +1011,7 @@ You may also specify receiver name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setCampaign()-detail">setCampaign</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$campaign&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setCampaign()-detail">setCampaign</a></strong> ( <span style="color: #0000BB">$campaign</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$campaign</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1027,20 +1027,18 @@ You may also specify receiver name in addition to email address using format:
         
         setCc()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
     <div class="doc-description">
         <p><strong>Sets the Cc (additional copy receiver) addresses of this message.</strong></p>
 
-        <p>Both CC and BCC recipients require set 'header_to' field, it should be the email of the main recipient.
-SparkPost distinguish CC and BCC recipients by having the same email in 'Cc' header of the message/template.</p>
-
+        
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setCc()-detail">setCc</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$cc&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setCc()-detail">setCc</a></strong> ( <span style="color: #0000BB">$cc</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$cc</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1052,7 +1050,7 @@ You may also specify receiver name in addition to email address using format:
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -1066,7 +1064,7 @@ You may also specify receiver name in addition to email address using format:
         
         setCharset()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1077,7 +1075,7 @@ You may also specify receiver name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setCharset()-detail">setCharset</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$charset&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setCharset()-detail">setCharset</a></strong> ( <span style="color: #0000BB">$charset</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$charset</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1086,7 +1084,7 @@ You may also specify receiver name in addition to email address using format:
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -1105,7 +1103,7 @@ You may also specify receiver name in addition to email address using format:
         
         setDescription()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1116,7 +1114,7 @@ You may also specify receiver name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setDescription()-detail">setDescription</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$description&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setDescription()-detail">setDescription</a></strong> ( <span style="color: #0000BB">$description</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$description</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1133,7 +1131,7 @@ You may also specify receiver name in addition to email address using format:
         
         setFrom()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1144,7 +1142,7 @@ You may also specify receiver name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setFrom()-detail">setFrom</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$from&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setFrom()-detail">setFrom</a></strong> ( <span style="color: #0000BB">$from</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$from</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1156,7 +1154,7 @@ You may also specify sender name in addition to email address using format:
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -1170,7 +1168,7 @@ You may also specify sender name in addition to email address using format:
         
         setHtmlBody()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1181,7 +1179,7 @@ You may also specify sender name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setHtmlBody()-detail">setHtmlBody</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$html&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setHtmlBody()-detail">setHtmlBody</a></strong> ( <span style="color: #0000BB">$html</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$html</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1190,7 +1188,7 @@ You may also specify sender name in addition to email address using format:
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -1204,7 +1202,7 @@ You may also specify sender name in addition to email address using format:
         
         setMetadata()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1215,7 +1213,7 @@ You may also specify sender name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setMetadata()-detail">setMetadata</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$metadata&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setMetadata()-detail">setMetadata</a></strong> ( <span style="color: #0000BB">$metadata</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$metadata</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1231,7 +1229,7 @@ You may also specify sender name in addition to email address using format:
         
         setOptions()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1250,11 +1248,39 @@ You may also specify sender name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setOptions()-detail">setOptions</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setOptions()-detail">setOptions</a></strong> ( <span style="color: #0000BB">$options</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$options</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
                   <td class="param-desc-col"></td>
+                </tr>
+                                                </table>
+
+<!--	-->
+
+    <div class="detail-header h3" id="setRecipientsListId()-detail">
+        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a class="tool-link hash" href="djagya-sparkpost-message.html#setRecipientsListId()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+        
+        setRecipientsListId()
+        <span class="detail-header-tag small">
+            public                                    method
+                    </span>
+    </div>
+
+    <div class="doc-description">
+        <p><strong>Set stored recipients list id to use instead usual $to.</strong></p>
+
+        
+            </div>
+
+    <table class="detail-table table table-striped table-bordered table-hover">
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setRecipientsListId()-detail">setRecipientsListId</a></strong> ( <span style="color: #0000BB">$listId</span> )</td></tr>
+                                    <tr>
+                  <td class="param-name-col"><span style="color: #0000BB">$listId</span></td>
+                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
+                  <td class="param-desc-col"><p>Stored recipients list id.</p>
+</td>
                 </tr>
                                                 </table>
 
@@ -1266,7 +1292,7 @@ You may also specify sender name in addition to email address using format:
         
         setReplyTo()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1277,7 +1303,7 @@ You may also specify sender name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setReplyTo()-detail">setReplyTo</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$replyTo&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setReplyTo()-detail">setReplyTo</a></strong> ( <span style="color: #0000BB">$replyTo</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$replyTo</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1289,7 +1315,7 @@ You may also specify reply-to name in addition to email address using format:
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -1303,7 +1329,7 @@ You may also specify reply-to name in addition to email address using format:
         
         setReturnPath()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1314,7 +1340,7 @@ You may also specify reply-to name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setReturnPath()-detail">setReturnPath</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$returnPath&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setReturnPath()-detail">setReturnPath</a></strong> ( <span style="color: #0000BB">$returnPath</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$returnPath</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1330,7 +1356,7 @@ You may also specify reply-to name in addition to email address using format:
         
         setRfc822()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1341,7 +1367,7 @@ You may also specify reply-to name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setRfc822()-detail">setRfc822</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$rfc822&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setRfc822()-detail">setRfc822</a></strong> ( <span style="color: #0000BB">$rfc822</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$rfc822</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1357,7 +1383,7 @@ You may also specify reply-to name in addition to email address using format:
         
         setSandbox()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1368,39 +1394,11 @@ You may also specify reply-to name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setSandbox()-detail">setSandbox</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$sandbox&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setSandbox()-detail">setSandbox</a></strong> ( <span style="color: #0000BB">$sandbox</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$sandbox</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
                   <td class="param-desc-col"></td>
-                </tr>
-                                                </table>
-
-<!--	-->
-
-    <div class="detail-header h3" id="setStoredRecipientsList()-detail">
-        <a href="#" class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-        <a class="tool-link hash" href="djagya-sparkpost-message.html#setStoredRecipientsList()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
-        
-        setStoredRecipientsList()
-        <span class="detail-header-tag small">
-            public            method
-                    </span>
-    </div>
-
-    <div class="doc-description">
-        <p><strong>Set stored recipients list id to use instead usual $to.</strong></p>
-
-        
-            </div>
-
-    <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setStoredRecipientsList()-detail">setStoredRecipientsList</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$listId&nbsp;</span><span style="color: #007700">)</span></td></tr>
-                                    <tr>
-                  <td class="param-name-col"><span style="color: #0000BB">$listId</span></td>
-                  <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
-                  <td class="param-desc-col"><p>Stored recipients list id.</p>
-</td>
                 </tr>
                                                 </table>
 
@@ -1412,7 +1410,7 @@ You may also specify reply-to name in addition to email address using format:
         
         setSubject()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1423,7 +1421,7 @@ You may also specify reply-to name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setSubject()-detail">setSubject</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$subject&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setSubject()-detail">setSubject</a></strong> ( <span style="color: #0000BB">$subject</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$subject</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1432,7 +1430,7 @@ You may also specify reply-to name in addition to email address using format:
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -1446,7 +1444,7 @@ You may also specify reply-to name in addition to email address using format:
         
         setSubstitutionData()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1457,7 +1455,7 @@ You may also specify reply-to name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setSubstitutionData()-detail">setSubstitutionData</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setSubstitutionData()-detail">setSubstitutionData</a></strong> ( <span style="color: #0000BB">$data</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$data</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.array">array</a></td>
@@ -1473,7 +1471,7 @@ You may also specify reply-to name in addition to email address using format:
         
         setTemplateId()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1484,7 +1482,7 @@ You may also specify reply-to name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setTemplateId()-detail">setTemplateId</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$templateId&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setTemplateId()-detail">setTemplateId</a></strong> ( <span style="color: #0000BB">$templateId</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$templateId</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1500,7 +1498,7 @@ You may also specify reply-to name in addition to email address using format:
         
         setTextBody()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1511,7 +1509,7 @@ You may also specify reply-to name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setTextBody()-detail">setTextBody</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$text&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setTextBody()-detail">setTextBody</a></strong> ( <span style="color: #0000BB">$text</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$text</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1520,7 +1518,7 @@ You may also specify reply-to name in addition to email address using format:
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -1534,7 +1532,7 @@ You may also specify reply-to name in addition to email address using format:
         
         setTo()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1545,7 +1543,7 @@ You may also specify reply-to name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">$this <strong><a href="djagya-sparkpost-message.html#setTo()-detail">setTo</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$to&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setTo()-detail">setTo</a></strong> ( <span style="color: #0000BB">$to</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$to</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a>|<a href="http://www.php.net/language.types.array">array</a></td>
@@ -1557,7 +1555,7 @@ You may also specify receiver name in addition to email address using format:
                 </tr>
                                         <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col">$this</td>
+                  <td class="param-type-col"><a href="djagya-sparkpost-message.html">$this</a></td>
                   <td class="param-desc-col"><p>Self reference.</p>
 </td>
                 </tr>
@@ -1571,7 +1569,7 @@ You may also specify receiver name in addition to email address using format:
         
         setUseDraftTemplate()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1582,7 +1580,7 @@ You may also specify receiver name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature">void <strong><a href="djagya-sparkpost-message.html#setUseDraftTemplate()-detail">setUseDraftTemplate</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$useDraftTemplate&nbsp;</span><span style="color: #007700">)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="djagya-sparkpost-message.html">$this</a></span> <strong><a href="djagya-sparkpost-message.html#setUseDraftTemplate()-detail">setUseDraftTemplate</a></strong> ( <span style="color: #0000BB">$useDraftTemplate</span> )</td></tr>
                                     <tr>
                   <td class="param-name-col"><span style="color: #0000BB">$useDraftTemplate</span></td>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.boolean">boolean</a></td>
@@ -1598,7 +1596,7 @@ You may also specify receiver name in addition to email address using format:
         
         toSparkPostArray()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1609,7 +1607,7 @@ You may also specify receiver name in addition to email address using format:
         <p>See also <span class="broken-link">\SparkPost\Transmission::send()</span>.</p>    </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.array">array</a> <strong><a href="djagya-sparkpost-message.html#toSparkPostArray()-detail">toSparkPostArray</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.array">array</a></span> <strong><a href="djagya-sparkpost-message.html#toSparkPostArray()-detail">toSparkPostArray</a></strong> ( )</td></tr>
             </table>
 
 <!--	-->
@@ -1620,7 +1618,7 @@ You may also specify receiver name in addition to email address using format:
         
         toString()
         <span class="detail-header-tag small">
-            public            method
+            public                                    method
                     </span>
     </div>
 
@@ -1631,7 +1629,7 @@ You may also specify receiver name in addition to email address using format:
             </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><a href="http://www.php.net/language.types.string">string</a> <strong><a href="djagya-sparkpost-message.html#toString()-detail">toString</a></strong><span style="color: #0000BB"></span><span style="color: #007700">(&nbsp;)</span></td></tr>
+        <tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="http://www.php.net/language.types.string">string</a></span> <strong><a href="djagya-sparkpost-message.html#toString()-detail">toString</a></strong> ( )</td></tr>
                                                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><a href="http://www.php.net/language.types.string">string</a></td>
@@ -1680,12 +1678,12 @@ You may also specify receiver name in addition to email address using format:
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sun, 28 Feb 2016 14:39:24 +0000</small></p>
+        <p class="pull-right"><small>Page generated on Wed, 11 May 2016 14:41:58 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script type="text/javascript">jQuery(document).ready(function () {
     var shiftWindow = function () { scrollBy(0, -50) };
-    if (location.hash) shiftWindow();
+    if (location.hash) setTimeout(shiftWindow, 1);
     window.addEventListener("hashchange", shiftWindow);
 var element = document.createElement("script");
 element.src = "./jssearch.index.js";
