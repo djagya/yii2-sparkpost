@@ -1,6 +1,6 @@
 {
   "name": "djagya/yii2-sparkpost",
-  "version": "0.2.8",
+  "version": "0.3",
   "description": "A library provides Yii2 integration with SparkPost mail service",
   "keywords": [
     "sparkpost",
@@ -13,8 +13,7 @@
   "require": {
     "php": ">=5.5",
     "yiisoft/yii2": "*",
-    "sparkpost/php-sparkpost": "~1.0",
-    "guzzlehttp/guzzle": "~6.0"
+    "sparkpost/php-sparkpost": "~1.0"
   },
   "require-dev": {
     "codeception/codeception": "2.1.*",
@@ -22,7 +21,7 @@
   },
   "autoload": {
     "psr-4": {
-      "djagya\\sparkpost\\": ""
+      "djagya\\sparkpost\\": "src/"
     }
   },
   "license": "MIT",

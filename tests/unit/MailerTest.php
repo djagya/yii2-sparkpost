@@ -168,4 +168,36 @@ class MailerTest extends \Codeception\TestCase\Test
         $this->expectException(\SparkPost\APIResponseException::class);
         $mailer->compose()->setTo('mail@example.com')->send();
     }
+
+    public function testHttpAdapterConfig()
+    {
+        $mailer = new Mailer(['apiKey' => 'key', 'useDefaultEmail' => false]);
+        $this->assertInstanceOf(\Ivory\HttpAdapter\CurlHttpAdapter::class, $mailer->getSparkPost()->httpAdapter);
+
+        $mailer = new Mailer([
+            'apiKey' => 'key',
+            'useDefaultEmail' => false,
+            'httpAdapter' => \Ivory\HttpAdapter\SocketHttpAdapter::class
+        ]);
+        $this->assertInstanceOf(\Ivory\HttpAdapter\SocketHttpAdapter::class, $mailer->getSparkPost()->httpAdapter);
+
+        $mailer = new Mailer([
+                'apiKey' => 'key',
+                'useDefaultEmail' => false,
+                'httpAdapter' => function () {
+                    return new \Ivory\HttpAdapter\Guzzle6HttpAdapter();
+                }
+            ]
+        );
+        $this->assertInstanceOf(\Ivory\HttpAdapter\Guzzle6HttpAdapter::class, $mailer->getSparkPost()->httpAdapter);
+
+        $mailer = new Mailer([
+            'apiKey' => 'key',
+            'useDefaultEmail' => false,
+            'httpAdapter' => [
+                'class' => \Ivory\HttpAdapter\RequestsHttpAdapter::class,
+            ]
+        ]);
+        $this->assertInstanceOf(\Ivory\HttpAdapter\RequestsHttpAdapter::class, $mailer->getSparkPost()->httpAdapter);
+    }
 }

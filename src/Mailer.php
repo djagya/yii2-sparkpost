@@ -9,11 +9,11 @@
 
 namespace djagya\sparkpost;
 
-use GuzzleHttp\Client;
-use Ivory\HttpAdapter\Guzzle6HttpAdapter;
+use Ivory\HttpAdapter\CurlHttpAdapter;
 use SparkPost\APIResponseException;
 use SparkPost\SparkPost;
 use yii\base\InvalidConfigException;
+use yii\BaseYii;
 use yii\helpers\ArrayHelper;
 use yii\mail\BaseMailer;
 
@@ -26,6 +26,12 @@ use yii\mail\BaseMailer;
 class Mailer extends BaseMailer
 {
     const LOG_CATEGORY = 'sparkpost-mailer';
+
+    /**
+     * As a default http adapter will be used CurlHttpAdapter.
+     * @var array|callable|string
+     */
+    public $httpAdapter;
 
     /**
      * @var string SparkPost API Key, required.
@@ -91,7 +97,8 @@ class Mailer extends BaseMailer
 
         $this->sparkpostConfig['key'] = $this->apiKey;
 
-        $httpAdapter = new Guzzle6HttpAdapter(new Client());
+        // Initialize the http adapter, cUrl adapter is default
+        $httpAdapter = $this->httpAdapter ? BaseYii::createObject($this->httpAdapter) : new CurlHttpAdapter();
         $this->_sparkPost = new SparkPost($httpAdapter, $this->sparkpostConfig);
 
         if ($this->useDefaultEmail && !$this->defaultEmail) {

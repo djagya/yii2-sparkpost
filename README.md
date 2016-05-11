@@ -40,7 +40,7 @@ For testing purposes, while you're waiting for domain verification, you can use 
 Usage
 -----
 
-To use this extension, add the following code in your application configuration:
+To use this extension, add the following code in your application configuration (default cUrl http adapter will be used):
 
 ```php 
 return [
@@ -57,6 +57,27 @@ return [
 ```
 
 If you want to disable default "from" and "reply to" email address for messages you can set `useDefaultEmail` to `false` in Mailer config, but then you must specify "from" email address for every message you send.
+
+### Http Adapters
+
+You can use different http adapters: cUrl (default), guzzle, etc. Full list is here: [available adapters](https://github.com/egeloen/ivory-http-adapter/blob/master/doc/adapters.md).  
+For detailed information refer to [ivory-http-adapter](https://github.com/egeloen/ivory-http-adapter).
+
+To configure a http adapter that will be used by mailer you must specify `httpAdapter` attribute in the component configuration, you can use string, array or closure (`BaseYii::createObject()` is used to instantiate an adapter):
+
+```php 
+return [
+    //....
+    'components' => [
+        'mailer' => [
+            'class' => 'djagya\sparkpost\Mailer',
+            'apiKey' => 'YOUR_API_KEY',
+            'viewPath' => '@common/mail',
+            'httpAdapter' => 'Ivory\HttpAdapter\Guzzle6HttpAdapter', // OR array or closure
+        ],
+    ],
+];
+```
 
 ### Send an email
 
