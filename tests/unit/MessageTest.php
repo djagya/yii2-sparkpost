@@ -276,4 +276,101 @@ class MessageTest extends \Codeception\TestCase\Test
         $this->assertEquals($image['name'], 'image_1');
         $this->assertEquals($cid1, 'image_1');
     }
+
+    public function testUserData()
+    {
+        $message = new Message();
+
+        // To
+        $message->setTo([
+            'example@mail.com' => [
+                'name' => 'Recipient #1',
+                'metadata' => [
+                    'key' => 'value',
+                ],
+                'substitution_data' => [
+                    'template_key' => 'value',
+                ],
+                'tags' => ['tag1', 'tag2'],
+            ],
+        ]);
+        $this->assertEquals(['example@mail.com' => 'Recipient #1'], $message->getTo());
+        $this->assertEquals([
+            'example@mail.com' => [
+                'metadata' => [
+                    'key' => 'value',
+                ],
+                'substitution_data' => [
+                    'template_key' => 'value',
+                ],
+                'tags' => ['tag1', 'tag2'],
+            ]
+        ], $message->getUserData());
+
+        // Sparkpost array
+        $this->assertEquals([
+            [
+                'address' => ['email' => 'example@mail.com', 'name' => 'Recipient #1'],
+                'metadata' => [
+                    'key' => 'value',
+                ],
+                'substitution_data' => [
+                    'template_key' => 'value',
+                ],
+                'tags' => ['tag1', 'tag2'],
+            ]
+        ], $message->toSparkPostArray()['recipients']);
+
+        // Cc
+        $message->setCc([
+            'example@mail.com' => [
+                'name' => 'Recipient #1',
+                'metadata' => [
+                    'key' => 'value',
+                ],
+                'substitution_data' => [
+                    'template_key' => 'value',
+                ],
+                'tags' => ['tag1', 'tag2'],
+            ],
+        ]);
+        $this->assertEquals(['example@mail.com' => 'Recipient #1'], $message->getCc());
+        $this->assertEquals([
+            'example@mail.com' => [
+                'metadata' => [
+                    'key' => 'value',
+                ],
+                'substitution_data' => [
+                    'template_key' => 'value',
+                ],
+                'tags' => ['tag1', 'tag2'],
+            ]
+        ], $message->getUserData());
+
+        // Bcc
+        $message->setBcc([
+            'example@mail.com' => [
+                'name' => 'Recipient #1',
+                'metadata' => [
+                    'key' => 'value',
+                ],
+                'substitution_data' => [
+                    'template_key' => 'value',
+                ],
+                'tags' => ['tag1', 'tag2'],
+            ],
+        ]);
+        $this->assertEquals(['example@mail.com' => 'Recipient #1'], $message->getBcc());
+        $this->assertEquals([
+            'example@mail.com' => [
+                'metadata' => [
+                    'key' => 'value',
+                ],
+                'substitution_data' => [
+                    'template_key' => 'value',
+                ],
+                'tags' => ['tag1', 'tag2'],
+            ]
+        ], $message->getUserData());
+    }
 }

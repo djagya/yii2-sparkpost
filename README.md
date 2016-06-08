@@ -161,6 +161,29 @@ Yii::$app->mailer->compose()
     ->send();
 ```
 
+Besides that you can specify different set of template data, metadata, tags. You can specify these data for `To`, `Cc`, `Bcc` recipients.
+To do that you need to pass an array of addresses, where `key` is email and `value` is an array with specified `metadata`, `tags` and/or recipient `name`:
+
+```php
+$to = [
+    'example@mail.com' => [
+        'name' => 'Recipient #1',
+        'metadata' => [
+            'key' => 'value',
+        ],
+        'substitution_data' => [
+            'template_key' => 'value',
+        ],
+        'tags' => ['tag1', 'tag2'],
+    ],
+    // ... other possible addresses
+];
+
+Yii::$app->mailer->compose(['template' => 'sparkpost_template_id'], ['template_param' => 'value1', ...])
+    ->setTo($to)
+    ->send();
+```
+
 Unit Testing
 ------------
 

@@ -324,7 +324,7 @@ class Message extends BaseMessage
      * Returns user-specific data for this Message.
      * @return array
      */
-    public function getRecipientsData()
+    public function getUserData()
     {
         return $this->_userData;
     }
@@ -978,22 +978,22 @@ class Message extends BaseMessage
      * Extracts user-specific data from given typical for setTo, setCc, setBcc methods array,
      * fills $this->_userData property.
      * Repeated in 'To', 'Cc', 'Bcc' addresses data will be overwritten in order of setters calls.
-     * @param $to
+     * @param array $addresses
      * @return array list of addresses in canonical form
      */
-    private function extractUserData($to)
+    private function extractUserData($addresses)
     {
         $cleanAddresses = [];
 
         // Transform given $to addresses to normal yii form by extracting sparkpost user-specific data.
-        foreach ($to as $email => $name) {
+        foreach ($addresses as $email => $name) {
             if (is_int($email)) {
                 $cleanAddresses[] = $name;
             } elseif (is_array($name)) {
                 $this->_userData[$email] = [
                     'metadata' => ArrayHelper::getValue($name, 'metadata', []),
                     'substitution_data' => ArrayHelper::getValue($name, 'substitution_data', []),
-                    'tags' => ArrayHelper::getValue($name, 'substitution_data', []),
+                    'tags' => ArrayHelper::getValue($name, 'tags', []),
                 ];
 
                 $name = ArrayHelper::getValue($name, 'name');
