@@ -84,6 +84,8 @@ class Mailer extends BaseMailer
     public $rejectedCount = 0;
     /** @var string last transaction id */
     public $lastTransmissionId;
+    /** @var null|APIResponseException last transmission exception (if any) */
+    public $lastError;
 
     /** @var SparkPost */
     private $_sparkPost;
@@ -180,6 +182,10 @@ class Mailer extends BaseMailer
      */
     protected function sendMessage($message)
     {
+        // Clear info about last transmission.
+        $this->lastTransmissionId = $this->lastError = null;
+        $this->sentCount = $this->rejectedCount = 0;
+
         if (!$message->getTo()) {
             \Yii::warning('Message was not sent, because "to" recipients list is empty', self::LOG_CATEGORY);
 
@@ -193,7 +199,8 @@ class Mailer extends BaseMailer
             // Rejected messages.
             $this->rejectedCount = ArrayHelper::getValue($result, 'results.total_rejected_recipients');
             if ($this->rejectedCount > 0) {
-                \Yii::info("Transmission #{$this->lastTransmissionId}: {$this->rejectedCount} rejected", self::LOG_CATEGORY);
+                \Yii::info("Transmission #{$this->lastTransmissionId}: {$this->rejectedCount} rejected",
+                    self::LOG_CATEGORY);
             }
 
             // Sent messages.
@@ -207,6 +214,8 @@ class Mailer extends BaseMailer
 
             return true;
         } catch (APIResponseException $e) {
+            $this->lastError = $e;
+
             \Yii::error("An error occurred in mailer: {$e->getMessage()}, code: {$e->getAPICode()}, api message: \"{$e->getAPIMessage()}\", api description: \"{$e->getAPIDescription()}\"",
                 self::LOG_CATEGORY);
 
