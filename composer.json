@@ -1,6 +1,6 @@
 {
   "name": "djagya/yii2-sparkpost",
-  "version": "0.3",
+  "version": "0.4",
   "description": "A library provides Yii2 integration with SparkPost mail service",
   "keywords": [
     "sparkpost",
