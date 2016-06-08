@@ -9,6 +9,7 @@
 
 namespace djagya\sparkpost;
 
+use Ivory\HttpAdapter\Configuration;
 use Ivory\HttpAdapter\CurlHttpAdapter;
 use SparkPost\APIResponseException;
 use SparkPost\SparkPost;
@@ -26,6 +27,13 @@ use yii\mail\BaseMailer;
 class Mailer extends BaseMailer
 {
     const LOG_CATEGORY = 'sparkpost-mailer';
+
+    /**
+     * Allowed limit for send retries, positive integer.
+     * If limit is reached, last error will be thrown.
+     * @var int
+     */
+    public $retryLimit = 5;
 
     /**
      * As a default http adapter will be used CurlHttpAdapter.
@@ -107,7 +115,9 @@ class Mailer extends BaseMailer
         $this->sparkpostConfig['key'] = $this->apiKey;
 
         // Initialize the http adapter, cUrl adapter is default
-        $httpAdapter = $this->httpAdapter ? BaseYii::createObject($this->httpAdapter) : new CurlHttpAdapter();
+        $adapterConfig = new Configuration();
+        $adapterConfig->setTimeout(4);
+        $httpAdapter = $this->httpAdapter ? BaseYii::createObject($this->httpAdapter) : new CurlHttpAdapter($adapterConfig);
         $this->_sparkPost = new SparkPost($httpAdapter, $this->sparkpostConfig);
 
         if ($this->useDefaultEmail && !$this->defaultEmail) {
@@ -178,7 +188,7 @@ class Mailer extends BaseMailer
      * @link https://support.sparkpost.com/customer/en/portal/articles/2140916-extended-error-codes Errors descriptions
      * @param Message $message
      * @return bool|string either sent transaction id or 'false' on failure
-     * @throws \Exception
+     * @throws APIResponseException
      */
     protected function sendMessage($message)
     {
@@ -192,39 +202,54 @@ class Mailer extends BaseMailer
             return false;
         }
 
-        try {
-            $result = $this->_sparkPost->transmission->send($message->toSparkPostArray());
-            $this->lastTransmissionId = ArrayHelper::getValue($result, 'results.id');
+        $triesCount = 0;
+        while ($triesCount <= $this->retryLimit) {
+            $triesCount++;
 
-            // Rejected messages.
-            $this->rejectedCount = ArrayHelper::getValue($result, 'results.total_rejected_recipients');
-            if ($this->rejectedCount > 0) {
-                \Yii::info("Transmission #{$this->lastTransmissionId}: {$this->rejectedCount} rejected",
-                    self::LOG_CATEGORY);
-            }
-
-            // Sent messages.
-            $this->sentCount = ArrayHelper::getValue($result, 'results.total_accepted_recipients');
-            if ($this->sentCount === 0) {
-                \Yii::info("Transmission #{$this->lastTransmissionId} was rejected: all {$this->rejectedCount} rejected",
-                    self::LOG_CATEGORY);
-
-                return false;
-            }
-
-            return true;
-        } catch (APIResponseException $e) {
-            $this->lastError = $e;
-
-            \Yii::error("An error occurred in mailer: {$e->getMessage()}, code: {$e->getAPICode()}, api message: \"{$e->getAPIMessage()}\", api description: \"{$e->getAPIDescription()}\"",
-                self::LOG_CATEGORY);
-
-            if ($this->developmentMode) {
-                throw $e;
-            } else {
-                return false;
+            try {
+                return $this->internalSend($message);
+            } catch (APIResponseException $e) {
+                $this->lastError = $e;
             }
         }
+
+        // Transmission wasn't sent.
+        \Yii::error("An error occurred in mailer: {$this->lastError->getMessage()}, code: {$this->lastError->getAPICode()}, api message: \"{$this->lastError->getAPIMessage()}\", api description: \"{$this->lastError->getAPIDescription()}\"",
+            self::LOG_CATEGORY);
+
+        if ($this->developmentMode) {
+            throw $this->lastError;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param Message $message
+     * @return bool
+     */
+    protected function internalSend($message)
+    {
+        $result = $this->_sparkPost->transmission->send($message->toSparkPostArray());
+        $this->lastTransmissionId = ArrayHelper::getValue($result, 'results.id');
+
+        // Rejected messages.
+        $this->rejectedCount = ArrayHelper::getValue($result, 'results.total_rejected_recipients');
+        if ($this->rejectedCount > 0) {
+            \Yii::info("Transmission #{$this->lastTransmissionId}: {$this->rejectedCount} rejected",
+                self::LOG_CATEGORY);
+        }
+
+        // Sent messages.
+        $this->sentCount = ArrayHelper::getValue($result, 'results.total_accepted_recipients');
+        if ($this->sentCount === 0) {
+            \Yii::info("Transmission #{$this->lastTransmissionId} was rejected: all {$this->rejectedCount} rejected",
+                self::LOG_CATEGORY);
+
+            return false;
+        }
+
+        return true;
     }
 
     /**

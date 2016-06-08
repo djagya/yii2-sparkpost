@@ -5,6 +5,8 @@ use SparkPost\APIResponseException;
 
 class MailerTest extends \Codeception\TestCase\Test
 {
+    private static $functionCallCounter = 0;
+
     /**
      * @var \UnitTester
      */
@@ -69,7 +71,13 @@ class MailerTest extends \Codeception\TestCase\Test
     {
         $transmissionSuccess = \Codeception\Util\Stub::make('\SparkPost\Transmission', [
             'send' => function ($messageArray) {
-                return ['results' => ['total_accepted_recipients' => 1, 'total_rejected_recipients' => 0, 'id' => 'transaction-id']];
+                return [
+                    'results' => [
+                        'total_accepted_recipients' => 1,
+                        'total_rejected_recipients' => 0,
+                        'id' => 'transaction-id'
+                    ]
+                ];
             }
         ]);
 
@@ -87,7 +95,13 @@ class MailerTest extends \Codeception\TestCase\Test
     {
         $transmissionSuccess = \Codeception\Util\Stub::make('\SparkPost\Transmission', [
             'send' => function ($messageArray) {
-                return ['results' => ['total_accepted_recipients' => 1, 'total_rejected_recipients' => 1, 'id' => 'transaction-id']];
+                return [
+                    'results' => [
+                        'total_accepted_recipients' => 1,
+                        'total_rejected_recipients' => 1,
+                        'id' => 'transaction-id'
+                    ]
+                ];
             }
         ]);
 
@@ -105,7 +119,13 @@ class MailerTest extends \Codeception\TestCase\Test
     {
         $transmissionSuccess = \Codeception\Util\Stub::make('\SparkPost\Transmission', [
             'send' => function ($messageArray) {
-                return ['results' => ['total_accepted_recipients' => 0, 'total_rejected_recipients' => 1, 'id' => 'transaction-id']];
+                return [
+                    'results' => [
+                        'total_accepted_recipients' => 0,
+                        'total_rejected_recipients' => 1,
+                        'id' => 'transaction-id'
+                    ]
+                ];
             }
         ]);
 
@@ -213,5 +233,32 @@ class MailerTest extends \Codeception\TestCase\Test
             ]
         ]);
         $this->assertInstanceOf(\Ivory\HttpAdapter\RequestsHttpAdapter::class, $mailer->getSparkPost()->httpAdapter);
+    }
+
+    public function testRetryLimit()
+    {
+        $retryLimit = 8;
+
+        // Use external counter to see that last thrown error was equal $mailer->retryLimit
+        $transmission = \Codeception\Util\Stub::make('\SparkPost\Transmission', [
+            'send' => function ($messageArray) {
+                $e = new \SparkPost\APIResponseException(self::$functionCallCounter);
+                self::$functionCallCounter++;
+                throw $e;
+            }
+        ]);
+
+        $mailer = new Mailer([
+            'apiKey' => 'key',
+            'useDefaultEmail' => false,
+            'sandbox' => true,
+            'developmentMode' => false,
+            'retryLimit' => $retryLimit,
+        ]);
+        $mailer->getSparkPost()->transmission = $transmission;
+
+        $this->assertFalse($mailer->compose()->setTo('mail@example.com')->send());
+        $this->assertInstanceOf(APIResponseException::class, $mailer->lastError);
+        $this->assertEquals($retryLimit, $mailer->lastError->getMessage());
     }
 }
