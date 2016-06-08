@@ -1,6 +1,7 @@
 <?php
 
 use djagya\sparkpost\Mailer;
+use SparkPost\APIResponseException;
 
 class MailerTest extends \Codeception\TestCase\Test
 {
@@ -173,11 +174,13 @@ class MailerTest extends \Codeception\TestCase\Test
         $mailer->getSparkPost()->transmission = $transmission;
 
         $this->assertFalse($mailer->compose()->setTo('mail@example.com')->send());
+        $this->assertInstanceOf(APIResponseException::class, $mailer->lastError);
 
         // development mode on - we should get an exception
         $mailer->developmentMode = true;
         $this->expectException(\SparkPost\APIResponseException::class);
         $mailer->compose()->setTo('mail@example.com')->send();
+        $this->assertInstanceOf(APIResponseException::class, $mailer->lastError);
     }
 
     public function testHttpAdapterConfig()
