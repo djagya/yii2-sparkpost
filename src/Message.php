@@ -81,6 +81,19 @@ class Message extends BaseMessage
     private $_to = [];
 
     /**
+     * User specific data:
+     * [
+     *  'email' => [
+     *      'metadata' => [optional array],
+     *      'substitution_data' => [optional array],
+     *      'tags' => [optional array],
+     *  ]
+     * ]
+     * @var array
+     */
+    private $_userData = [];
+
+    /**
      * List of CC recipients
      * @var array
      */
@@ -284,15 +297,36 @@ class Message extends BaseMessage
      * You may pass an array of addresses if multiple recipients should receive this message.
      * You may also specify receiver name in addition to email address using format:
      * `[email => name]`.
+     * You may also pass an associative array with Sparkpost user-specific substitution (template) data and metadata,
+     * where key is the recipient email and value is an array containing:
+     * [
+     *  name => optional recipient name,
+     *  tags => [optional array of tags],
+     *  metadata => [optional array of metadata],
+     *  substitution_data => [optional array of user-specific template data],
+     * ]
      * @return $this self reference.
      */
     public function setTo($to)
     {
         unset($this->_to['list_id']);
 
-        $this->_to = is_string($to) ? ($to ? [$to] : []) : $to;
+        if (is_string($to)) {
+            $to = $to ? [$to] : [];
+        }
+
+        $this->_to = $this->extractUserData($to);
 
         return $this;
+    }
+
+    /**
+     * Returns user-specific data for this Message.
+     * @return array
+     */
+    public function getRecipientsData()
+    {
+        return $this->_userData;
     }
 
     /**
@@ -355,11 +389,23 @@ class Message extends BaseMessage
      * You may pass an array of addresses if multiple recipients should receive this message.
      * You may also specify receiver name in addition to email address using format:
      * `[email => name]`.
+     * You may also pass an associative array with Sparkpost user-specific substitution (template) data and metadata,
+     * where key is the recipient email and value is an array containing:
+     * [
+     *  name => optional recipient name,
+     *  tags => [optional array of tags],
+     *  metadata => [optional array of metadata],
+     *  substitution_data => [optional array of user-specific template data],
+     * ]
      * @return $this self reference.
      */
     public function setCc($cc)
     {
-        $this->_cc = is_string($cc) ? ($cc ? [$cc] : []) : $cc;
+        if (is_string($cc)) {
+            $cc = $cc ? [$cc] : [];
+        }
+
+        $this->_cc = $this->extractUserData($cc);
 
         return $this;
     }
@@ -387,11 +433,23 @@ class Message extends BaseMessage
      * You may pass an array of addresses if multiple recipients should receive this message.
      * You may also specify receiver name in addition to email address using format:
      * `[email => name]`.
+     * You may also pass an associative array with Sparkpost user-specific substitution (template) data and metadata,
+     * where key is the recipient email and value is an array containing:
+     * [
+     *  name => optional recipient name,
+     *  tags => [optional array of tags],
+     *  metadata => [optional array of metadata],
+     *  substitution_data => [optional array of user-specific template data],
+     * ]
      * @return $this self reference.
      */
     public function setBcc($bcc)
     {
-        $this->_bcc = is_string($bcc) ? ($bcc ? [$bcc] : []) : $bcc;
+        if (is_string($bcc)) {
+            $bcc = $bcc ? [$bcc] : [];
+        }
+
+        $this->_bcc = $this->extractUserData($bcc);
 
         return $this;
     }
@@ -850,12 +908,17 @@ class Message extends BaseMessage
         // To
         foreach ($this->_to as $email => $name) {
             if (is_int($email)) {
-                $address = ['email' => $name];
+                $email = $name;
+                $address = ['email' => $email];
             } else {
                 $address = ['email' => $email, 'name' => $name];
             }
 
-            $this->_sparkpostRecipients[] = ['address' => $address];
+            // Include user-specific data.
+            $this->_sparkpostRecipients[] = array_merge(
+                ['address' => $address],
+                ArrayHelper::getValue($this->_userData, $email, [])
+            );
         }
 
         $toRecipients = $this->emailsToString($this->_to);
@@ -868,7 +931,11 @@ class Message extends BaseMessage
                 $address = ['email' => $email, 'name' => $name];
             }
 
-            $this->_sparkpostRecipients[] = ['address' => $address];
+            // Include user-specific data.
+            $this->_sparkpostRecipients[] = array_merge(
+                ['address' => $address],
+                ArrayHelper::getValue($this->_userData, $email, [])
+            );
         }
         if ($this->_cc) {
             $this->_headers['Cc'] = $this->emailsToString($this->_cc);
@@ -882,7 +949,11 @@ class Message extends BaseMessage
                 $address = ['email' => $email, 'name' => $name];
             }
 
-            $this->_sparkpostRecipients[] = ['address' => $address];
+            // Include user-specific data.
+            $this->_sparkpostRecipients[] = array_merge(
+                ['address' => $address],
+                ArrayHelper::getValue($this->_userData, $email, [])
+            );
         }
     }
 
@@ -901,5 +972,41 @@ class Message extends BaseMessage
     private function isListUsed()
     {
         return isset($this->_to['list_id']);
+    }
+
+    /**
+     * Extracts user-specific data from given typical for setTo, setCc, setBcc methods array,
+     * fills $this->_userData property.
+     * Repeated in 'To', 'Cc', 'Bcc' addresses data will be overwritten in order of setters calls.
+     * @param $to
+     * @return array list of addresses in canonical form
+     */
+    private function extractUserData($to)
+    {
+        $cleanAddresses = [];
+
+        // Transform given $to addresses to normal yii form by extracting sparkpost user-specific data.
+        foreach ($to as $email => $name) {
+            if (is_int($email)) {
+                $cleanAddresses[] = $name;
+            } elseif (is_array($name)) {
+                $this->_userData[$email] = [
+                    'metadata' => ArrayHelper::getValue($name, 'metadata', []),
+                    'substitution_data' => ArrayHelper::getValue($name, 'substitution_data', []),
+                    'tags' => ArrayHelper::getValue($name, 'substitution_data', []),
+                ];
+
+                $name = ArrayHelper::getValue($name, 'name');
+                if ($name) {
+                    $cleanAddresses[$email] = $name;
+                } else {
+                    $cleanAddresses[] = $email;
+                }
+            } else {
+                $cleanAddresses[$email] = $name;
+            }
+        }
+
+        return $cleanAddresses;
     }
 }
