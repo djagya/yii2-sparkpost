@@ -51,12 +51,18 @@ return [
             'apiKey' => 'YOUR_API_KEY',
             'viewPath' => '@common/mail',
             'defaultEmail' => 'sender@example.com', // optional if 'adminEmail' app param is specified or 'useDefaultEmail' is false
+            'retryLimit' => 5, // optional
         ],
     ],
 ];
 ```
 
 If you want to disable default "from" and "reply to" email address for messages you can set `useDefaultEmail` to `false` in Mailer config, but then you must specify "from" email address for every message you send.
+
+Property `retryLimit` allows to make Mailer relatively failover.
+Mailer will try to send a transmission few times if it's getting an exception from Sparkpost, because sometimes Sparkpost API fails.
+When transmission send attempts count reaches specified `retryLimit` - last exception we got will be thrown.
+To disable that behavior and try to send transmission only once you can set `retryLimit` to `0`.
 
 ### Http Adapters
 
@@ -83,12 +89,23 @@ return [
 
 You can then send an email as follows:
 
-```php 
+```php
 Yii::$app->mailer->compose('contact/html')
     ->setFrom('from@domain.com')
     ->setTo($to)
     ->setSubject($from)
     ->send();
+```
+
+After email was sent few properties are filled with last transmission information:
+
+```php
+$mailer = Yii::$app->mailer;
+
+$mailer->lastTransmissionId; // string, id of the last transmission
+$mailer->lastError; // APIResponseException we got from Sparkpost library with detailed information from the response
+$mailer->sentCount; // int, amount of successfuly sent messages
+$mailer->rejectedCount; // int, amount of rejected messages
 ```
 
 ### Sandbox mode

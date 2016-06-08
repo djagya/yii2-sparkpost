@@ -202,9 +202,9 @@ class Mailer extends BaseMailer
             return false;
         }
 
-        $triesCount = 0;
-        while ($triesCount <= $this->retryLimit) {
-            $triesCount++;
+        $attemptsCount = 0;
+        while ($attemptsCount <= $this->retryLimit) {
+            $attemptsCount++;
 
             try {
                 return $this->internalSend($message);
