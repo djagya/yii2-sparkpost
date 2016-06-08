@@ -78,6 +78,13 @@ class Mailer extends BaseMailer
      */
     public $messageClass = 'djagya\sparkpost\Message';
 
+    /** @var int amount of sent messages last 'sendMessage' call */
+    public $sentCount = 0;
+    /** @var int amount of rejected messages last 'sendMessage' call */
+    public $rejectedCount = 0;
+    /** @var string last transaction id */
+    public $lastTransmissionId;
+
     /** @var SparkPost */
     private $_sparkPost;
 
@@ -168,7 +175,7 @@ class Mailer extends BaseMailer
      *
      * @link https://support.sparkpost.com/customer/en/portal/articles/2140916-extended-error-codes Errors descriptions
      * @param Message $message
-     * @return bool
+     * @return bool|string either sent transaction id or 'false' on failure
      * @throws \Exception
      */
     protected function sendMessage($message)
@@ -181,19 +188,21 @@ class Mailer extends BaseMailer
 
         try {
             $result = $this->_sparkPost->transmission->send($message->toSparkPostArray());
+            $this->lastTransmissionId = ArrayHelper::getValue($result, 'results.id');
 
-            if (ArrayHelper::getValue($result, 'total_accepted_recipients') === 0) {
-                \Yii::info('Transmission #' . ArrayHelper::getValue($result, 'id') . ' was rejected: ' .
-                    ArrayHelper::getValue($result, 'total_rejected_recipients') . ' rejected',
+            // Rejected messages.
+            $this->rejectedCount = ArrayHelper::getValue($result, 'results.total_rejected_recipients');
+            if ($this->rejectedCount > 0) {
+                \Yii::info("Transmission #{$this->lastTransmissionId}: {$this->rejectedCount} rejected", self::LOG_CATEGORY);
+            }
+
+            // Sent messages.
+            $this->sentCount = ArrayHelper::getValue($result, 'results.total_accepted_recipients');
+            if ($this->sentCount === 0) {
+                \Yii::info("Transmission #{$this->lastTransmissionId} was rejected: all {$this->rejectedCount} rejected",
                     self::LOG_CATEGORY);
 
                 return false;
-            }
-
-            if (ArrayHelper::getValue($result, 'total_rejected_recipients') > 0) {
-                \Yii::info('Transmission #' . ArrayHelper::getValue($result, 'id') . ': ' .
-                    ArrayHelper::getValue($result, 'total_rejected_recipients') . ' rejected',
-                    self::LOG_CATEGORY);
             }
 
             return true;

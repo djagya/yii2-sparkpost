@@ -68,7 +68,7 @@ class MailerTest extends \Codeception\TestCase\Test
     {
         $transmissionSuccess = \Codeception\Util\Stub::make('\SparkPost\Transmission', [
             'send' => function ($messageArray) {
-                return ['total_accepted_recipients' => 1, 'total_rejected_recipients' => 0];
+                return ['results' => ['total_accepted_recipients' => 1, 'total_rejected_recipients' => 0, 'id' => 'transaction-id']];
             }
         ]);
 
@@ -77,13 +77,16 @@ class MailerTest extends \Codeception\TestCase\Test
         $mailer->getSparkPost()->transmission = $transmissionSuccess;
 
         $this->assertTrue($mailer->compose()->setTo('mail@example.com')->send());
+        $this->assertEquals($mailer->sentCount, 1);
+        $this->assertEquals($mailer->rejectedCount, 0);
+        $this->assertEquals('transaction-id', $mailer->lastTransmissionId);
     }
 
     public function testRejectedSend()
     {
         $transmissionSuccess = \Codeception\Util\Stub::make('\SparkPost\Transmission', [
             'send' => function ($messageArray) {
-                return ['total_accepted_recipients' => 1, 'total_rejected_recipients' => 1];
+                return ['results' => ['total_accepted_recipients' => 1, 'total_rejected_recipients' => 1, 'id' => 'transaction-id']];
             }
         ]);
 
@@ -92,13 +95,16 @@ class MailerTest extends \Codeception\TestCase\Test
         $mailer->getSparkPost()->transmission = $transmissionSuccess;
 
         $this->assertTrue($mailer->compose()->setTo('mail@example.com')->send());
+        $this->assertEquals($mailer->sentCount, 1);
+        $this->assertEquals($mailer->rejectedCount, 1);
+        $this->assertEquals('transaction-id', $mailer->lastTransmissionId);
     }
 
     public function testAllRejectedSend()
     {
         $transmissionSuccess = \Codeception\Util\Stub::make('\SparkPost\Transmission', [
             'send' => function ($messageArray) {
-                return ['total_accepted_recipients' => 0, 'total_rejected_recipients' => 1];
+                return ['results' => ['total_accepted_recipients' => 0, 'total_rejected_recipients' => 1, 'id' => 'transaction-id']];
             }
         ]);
 
@@ -107,6 +113,9 @@ class MailerTest extends \Codeception\TestCase\Test
         $mailer->getSparkPost()->transmission = $transmissionSuccess;
 
         $this->assertFalse($mailer->compose()->setTo('mail@example.com')->send());
+        $this->assertEquals($mailer->sentCount, 0);
+        $this->assertEquals($mailer->rejectedCount, 1);
+        $this->assertEquals('transaction-id', $mailer->lastTransmissionId);
     }
 
     public function testRealSend()
@@ -125,10 +134,12 @@ class MailerTest extends \Codeception\TestCase\Test
                 ->setTo('test@example.com')
                 ->send()
         );
+        $this->assertEquals(1, $mailer->sentCount);
+        $this->assertNotEmpty($mailer->lastTransmissionId);
     }
 
     /**
-     * We shouldn't get any exceptions here
+     * We shouldn't get any exceptions here in non-development mode
      */
     public function testEmptySend()
     {
