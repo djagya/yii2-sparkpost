@@ -6,12 +6,11 @@ php:
 install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - composer global require "fxp/composer-asset-plugin:*"
-  - composer global require "codeception/codeception:~2.1"
   - composer update
 
 script:
-  - codecept build
-  - codecept run
+  - vendor/bin/codecept build
+  - vendor/bin/codecept run
 
 notifications:
   email: false
