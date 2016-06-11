@@ -187,7 +187,7 @@ class Mailer extends BaseMailer
      *
      * @link https://support.sparkpost.com/customer/en/portal/articles/2140916-extended-error-codes Errors descriptions
      * @param Message $message
-     * @return bool|string either sent transaction id or 'false' on failure
+     * @return bool
      * @throws APIResponseException
      */
     protected function sendMessage($message)
