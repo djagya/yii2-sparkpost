@@ -16,7 +16,7 @@
     "sparkpost/php-sparkpost": "~1.0"
   },
   "require-dev": {
-    "codeception/codeception": "2.1.*",
+    "codeception/codeception": "*",
     "yiisoft/yii2-apidoc": "~2.0.0"
   },
   "autoload": {
