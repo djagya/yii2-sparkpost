@@ -51,6 +51,7 @@ class Message extends BaseMessage
         'transactional' => 'options.transactional',
         'sandbox' => 'options.sandbox',
         'startTime' => 'options.start_time',
+        'inlineCss' => 'options.inline_css',
         'inline_images' => 'images',
         'attachments',
     ];
