@@ -30,7 +30,7 @@ Set Up
 
 To use SparkPost you will need to have a [SparkPost Account](https://www.sparkpost.com/). 
 
-Every account has a **free** quota: **100k emails per month**. 
+They have a free Developer account that includes up to 15K messages/month, as well as a sandbox for ongoing development and testing with the same built-in features and performance as their paid plans, with no time limitation. 
 
 Once you have an account you will need to create an **API Key**.  
 You can create as many API keys as you want, and it's best practice to create one for each website.  
